@@ -3,7 +3,7 @@
 const $=id=>document.getElementById(id);
 const storageKey='supada-itami-reports-v1';
 const state={custom:{},filter:'Alle',search:'',open:false,opening:false,chapter:0,page:0,view:'contents',currentReport:1,motionOff:false};
-const BOOK_OPENING_MS=1800;
+const BOOK_OPENING_MS=720;
 const escapeHtml=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const validDate=date=>typeof date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(date)&&date>='1900-01-01'&&date<='2100-12-31'&&!Number.isNaN(Date.parse(date+'T12:00:00Z'))&&new Date(date+'T12:00:00Z').toISOString().slice(0,10)===date;
 const dateText=date=>new Intl.DateTimeFormat('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'));
@@ -69,42 +69,32 @@ function setView(view,focus=false){
   if(focus){const target=view==='reader'?$('reader-page'):$('contents-page');target.focus({preventScroll:true});}
 }
 function writeHash(hash){try{history.replaceState(null,'',hash);}catch{}}
-const openingGeometryProperties=['--opening-cover-left','--opening-cover-top','--opening-cover-width','--opening-cover-height','--opening-cover-transform','--opening-spread-from'];
-function captureOpeningCover(){
-  const cover=$('closed-book'),stage=$('buch'),width=cover.offsetWidth,height=cover.offsetHeight;
-  if(width<=0||height<=0)return null;
-  const computed=window.getComputedStyle(cover),transform=computed.transform,match=transform.match(/^matrix\(([^)]+)\)$/);
-  let matrix=match?match[1].split(',').map(Number):null;
-  if(!matrix||matrix.length!==6||matrix.some(value=>!Number.isFinite(value))){const angle=-2*Math.PI/180,rest=parseFloat(window.getComputedStyle(stage).getPropertyValue('--cover-rest-y'))||-40;matrix=[Math.cos(angle),Math.sin(angle),-Math.sin(angle),Math.cos(angle),-width/2,height*rest/100];}
-  const originParts=(computed.transformOrigin||'50% 50%').split(/\s+/),origin=originParts.slice(0,2).map((part,index)=>{const size=index?height:width,value=parseFloat(part);return Number.isFinite(value)?part.endsWith('%')?value*size/100:value:size/2;});
-  const geometry={left:cover.offsetLeft,top:cover.offsetTop,width,height,matrix,origin};
-  stage.style.setProperty('--opening-cover-left',`${geometry.left}px`);stage.style.setProperty('--opening-cover-top',`${geometry.top}px`);stage.style.setProperty('--opening-cover-width',`${width}px`);stage.style.setProperty('--opening-cover-height',`${height}px`);stage.style.setProperty('--opening-cover-transform',`matrix(${matrix.join(',')})`);
-  return geometry;
-}
-function alignOpeningSpread(cover){
-  if(!cover)return;const spread=$('open-spread'),width=spread.offsetWidth,height=spread.offsetHeight;if(width<=0||height<=0)return;
-  const [a,b,c,d,e,f]=cover.matrix,[ox,oy]=cover.origin,sx=cover.width/width,sy=cover.height/height;
-  const matrix=[a*sx,b*sx,c*sy,d*sy,e+ox-a*ox-c*oy+cover.left-spread.offsetLeft,f+oy-b*ox-d*oy+cover.top-spread.offsetTop];
-  $('buch').style.setProperty('--opening-spread-from',`matrix(${matrix.join(',')})`);
+function syncBookVisibility(){
+  const ready=state.open&&!state.opening;
+  $('open-spread').hidden=!ready;$('open-spread').inert=!ready;$('book-tools').hidden=!ready;
+  $('buch').classList.toggle('is-open',ready);$('buch').classList.toggle('is-opening',state.opening);
+  if(state.opening)$('buch').setAttribute('aria-busy','true');else $('buch').removeAttribute('aria-busy');
+  $('closed-book').setAttribute('aria-hidden',String(state.open));$('closed-book').inert=state.open;
+  $('cover-heading').setAttribute('aria-hidden',String(state.open));$('cover-callout').setAttribute('aria-hidden',String(state.open));$('cover-callout').inert=state.open;
+  $('open-book-cover').disabled=state.open;$('open-book').disabled=state.open;
 }
 function finishOpening(restoreFocus=true){
-  clearTimeout(openingTimer);const shouldFocus=openingFocus;openingFocus=false;state.opening=false;$('buch').classList.remove('is-opening');$('buch').removeAttribute('aria-busy');$('open-spread').inert=false;
-  for(const property of openingGeometryProperties)$('buch').style.removeProperty(property);
+  clearTimeout(openingTimer);const shouldFocus=openingFocus;openingFocus=false;state.opening=false;syncBookVisibility();
   if(state.open){$('opening-status').textContent='Buch geöffnet. 13 Kapitel stehen im Inhaltsverzeichnis.';if(restoreFocus&&shouldFocus)setView(state.view,true);}
 }
 function openBook(options={}){
   const animate=!state.open&&!state.motionOff&&options.animate!==false;
-  const openingCover=animate?captureOpeningCover():null;
-  if(animate){state.opening=true;openingFocus=Boolean(options.focus);$('buch').style.setProperty('--book-opening-duration',`${BOOK_OPENING_MS}ms`);$('buch').classList.add('is-opening');$('buch').setAttribute('aria-busy','true');$('opening-status').textContent='Das Konoha-Buch öffnet sich.';$('open-spread').inert=true;clearTimeout(openingTimer);openingTimer=setTimeout(()=>finishOpening(),BOOK_OPENING_MS);}
-  state.open=true;$('open-spread').inert=state.opening;$('open-spread').hidden=false;$('book-tools').hidden=false;$('buch').classList.add('is-open');$('closed-book').setAttribute('aria-hidden','true');$('closed-book').inert=true;$('cover-heading').setAttribute('aria-hidden','true');$('cover-callout').setAttribute('aria-hidden','true');$('cover-callout').inert=true;$('open-book-cover').disabled=true;$('open-book').disabled=true;
-  setView(options.view||'contents',Boolean(options.focus));renderContents();renderReader();if(options.hash!==false)writeHash(state.chapter?`#bericht-${state.chapter}`:'#inhalt');
-  if(animate)alignOpeningSpread(openingCover);
+  state.open=true;
+  if(animate){state.opening=true;openingFocus=Boolean(options.focus);$('buch').style.setProperty('--book-opening-duration',BOOK_OPENING_MS+'ms');$('opening-status').textContent='Das Konoha-Buch öffnet sich.';clearTimeout(openingTimer);openingTimer=setTimeout(()=>finishOpening(),BOOK_OPENING_MS+120);}
+  syncBookVisibility();setView(options.view||'contents',Boolean(options.focus));renderContents();renderReader();
+  if(!state.opening)$('opening-status').textContent='Buch geöffnet. 13 Kapitel stehen im Inhaltsverzeichnis.';
+  if(options.hash!==false)writeHash(state.chapter?'#bericht-'+state.chapter:'#inhalt');
 }
 function closeBook(options={}){
-  finishOpening(false);$('opening-status').textContent='Buch zugeklappt.';
-  state.open=false;$('open-spread').hidden=true;$('book-tools').hidden=true;$('buch').classList.remove('is-open');$('closed-book').setAttribute('aria-hidden','false');$('closed-book').inert=false;$('cover-heading').setAttribute('aria-hidden','false');$('cover-callout').setAttribute('aria-hidden','false');$('cover-callout').inert=false;$('open-book-cover').disabled=false;$('open-book').disabled=false;
+  state.open=false;finishOpening(false);$('opening-status').textContent='Buch zugeklappt.';
   if(options.hash!==false)writeHash('#start');if(options.focus!==false)$('open-book-cover').focus({preventScroll:true});
 }
+$('open-book-cover').addEventListener('animationend',event=>{if(state.opening&&event.target===$('open-book-cover')&&event.animationName==='konoha-simple-open')finishOpening();});
 function selectChapter(id,page=0,options={}){
   id=Number(id);if(!getReport(id))return false;const old=state.chapter*100+state.page;
   if(state.opening&&options.animate===false)finishOpening(false);
@@ -164,7 +154,7 @@ document.addEventListener('keydown',event=>{
 let touchStart=null;
 $('reader-page').addEventListener('touchstart',event=>{const touch=event.touches[0];touchStart=touch?{x:touch.clientX,y:touch.clientY}:null;},{passive:true});
 $('reader-page').addEventListener('touchend',event=>{const touch=event.changedTouches[0];if(!touchStart||!touch)return;const dx=touch.clientX-touchStart.x,dy=touch.clientY-touchStart.y;touchStart=null;if(window.getSelection()?.toString())return;if(Math.abs(dx)>75&&Math.abs(dx)>Math.abs(dy)*1.5)turnPage(dx<0?1:-1);},{passive:true});
-window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{const budget=pageBudget();if(budget!==wordsPerPage){wordsPerPage=budget;renderContents();renderReader();}setView(state.view);},140);});
+window.addEventListener('resize',()=>{if(state.opening)finishOpening(false);clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{const budget=pageBudget();if(budget!==wordsPerPage){wordsPerPage=budget;renderContents();renderReader();}setView(state.view);},140);});
 window.addEventListener('hashchange',()=>goTo(location.hash,{hash:false,animate:false,focus:false}));
 
 function exportText(){return 'Das Konoha-Buch\nSupada Itami · Chunin\n\nFiktive Musterberichte für dein Rollenspiel. Unbearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.\n\n'+reports.map(original=>{const report=getReport(original.id);return `Kapitel ${String(report.id).padStart(2,'0')} — ${report.title} · ${dateText(report.date)}${state.custom[report.id]?'':' [Textvorschlag]'}\n\n${report.body}`;}).join('\n\n────────────────────\n\n');}
