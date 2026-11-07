@@ -1,6 +1,6 @@
 # Supada Itami · Shinobi-Berichtsheft
 
-Filmisches Naruto-Berichtsheft für Supada Itami in Zenkai DE. Nach dem Öffnen einer Schriftrolle führt die Seite durch bildschirmfüllende Manga-Szenen mit eigenen Dorf- und Waldillustrationen. Die 13 vollständigen Berichte liegen auf Papierrollen. Steckbrief, Rangweg, Kapitelnavigation und Tastaturbedienung ergänzen die Geschichte. Die vier ursprünglichen Musterberichte sind vollständig erhalten.
+Filmisches Naruto-Berichtsheft für Supada Itami in Zenkai DE. Nach dem Öffnen einer Schriftrolle führt die Seite durch bildschirmfüllende Manga-Szenen mit eigenen Dorf- und Waldillustrationen. Die 13 vollständigen Berichte liegen auf Papierrollen. Steckbrief, Rangweg, Kapitelnavigation und Tastaturbedienung ergänzen die Geschichte. Die vier ursprünglichen Musterberichte sind vollständig erhalten. Supada Itamis weißhaariger Charakter mit roten Gesichtsmarkierungen und Chunin-Weste ist als freigestelltes Portrait auf der Startseite und im Steckbrief eingebunden.
 
 - Neuer Rang: Bestätigter Genin · 28.10.2026
 - Neuer Rang: Chunin · 04.11.2026
