@@ -1,16 +1,32 @@
-# Supada Itami · Shinobi-Berichtsheft
+# Supada Itami · Das Konoha-Buch
 
-Interaktives Konoha-Buch für Supada Itami in Zenkai DE. Der grüne Buchdeckel mit Konoha-Symbol, Charakterporträt und Namen lässt sich öffnen. Das aufgeschlagene Buch zeigt links ein Inhaltsverzeichnis mit 13 Kapiteln und rechts den Steckbrief oder die gewählte Buchseite. Längere Kapitel werden vollständig auf mehrere Seiten verteilt; Pfeile, Pfeiltasten und Wischgesten blättern durch das Buch. Auf dem Handy wechseln die Ansichten Inhalt / Buchseite. Die vier ursprünglichen Musterberichte und alle 13 vollständigen Datensätze bleiben erhalten.
+Persönliches Naruto-Rollenspiel-Berichtsheft mit 13 vollständigen, bearbeitbaren Kapiteln. Statische Website auf GitHub Pages; keine Installation und kein Build notwendig.
 
-Die Öffnung verwendet einen einzelnen Deckelschwenk von 720 ms. Die Buchansicht bleibt währenddessen verborgen und wird erst nach dem Ende der Deckelanimation sichtbar. Größenüberblendung und zusätzliche Seitenfächerung wurden entfernt. Ein kurzer Fallback verhindert blockierte Bedienung, falls der Browser kein animationend-Ereignis liefert. Escape bricht ab; reduzierte Bewegung und direkte Kapitellinks öffnen sofort.
+## Bedienung
 
-- Neuer Rang: Bestätigter Genin · 28.10.2026
-- Neuer Rang: Chunin · 04.11.2026
+- Den grünen Einband oder „Mein Buch öffnen“ anklicken. Eine kurze, fest dimensionierte Einbandanimation führt zur Leseansicht.
+- Im Inhaltsverzeichnis ein Kapitel auswählen, suchen oder nach Thema filtern. Jedes Kapitel wird vollständig angezeigt und kann vertikal gescrollt werden.
+- „Zurück“ und „Weiter“ wechseln zwischen Kapiteln. Pfeiltasten funktionieren außerhalb von Eingabefeldern; Escape schließt das Buch.
+- Auf kleinen Bildschirmen zwischen „Inhalt“ und „Lesen“ wechseln.
+- Über „Bearbeiten“ eigene Texte, Titel und Daten eintragen. Änderungen liegen ausschließlich im Browser dieses Geräts, unter dem bestehenden Schlüssel `supada-itami-reports-v1`.
+- „Text“ lädt alle Berichte inklusive Änderungen herunter. „Drucken / PDF“ enthält alle 13 vollständigen Kapitel.
+- Die Animation kann am Desktop ausgeschaltet werden. Die Systemeinstellung für reduzierte Bewegung wird auf allen Geräten berücksichtigt.
 
-Weitere Daten und Tätigkeiten sind als fiktive Textvorschläge gekennzeichnet und im Browser bearbeitbar. Die beiden bestätigten Rangtitel und Rangdaten bleiben erhalten. Eigene Texte bleiben unter demselben lokalen Speicherschlüssel wie in der vorherigen Version erhalten. Das Inhaltsverzeichnis bietet Suche und Kategoriefilter. Textdownload und Drucken / PDF enthalten alle 13 vollständigen aktuellen Kapitel. Bewegungen respektieren die Systemeinstellung und können zusätzlich abgeschaltet werden. Enter öffnet das Buch, links/rechts blättert, I zeigt den Inhalt, E öffnet den Editor und Escape klappt das Buch zu.
+Die Rangtitel und Daten sind fest: **Neuer Rang: Bestätigter Genin · 28.10.2026** und **Neuer Rang: Chunin · 04.11.2026**. Ihre Berichtstexte können bearbeitet werden. Andere Tätigkeiten und weitere Daten sind fiktive, bearbeitbare Textvorschläge. Die vier ursprünglichen ausführlichen Berichte sind unverändert in `reports.js` enthalten.
 
-## Veröffentlichung
+## Aufbau
 
-Buildlose HTML/CSS/JavaScript-Seite. index.html, style.css, reports.js, app.js und assets/ liegen im Hauptverzeichnis. Der vorhandene GitHub-Pages-Workflow veröffentlicht Änderungen an main automatisch. Kein Build-Schritt, keine zusätzlichen Pakete. reports.js enthält die 13 erhaltenen Originaldatensätze. #start zeigt den geschlossenen Buchdeckel. #inhalt öffnet das Inhaltsverzeichnis, #steckbrief die Titelseite. #bericht-1 bis #bericht-13 und die bisherigen #monat-1 bis #monat-13 öffnen das passende Kapitel direkt.
+- `index.html`: Einband, Buch, Editor und zugängliche Bedienelemente.
+- `style.css`: responsives Layout, dezente Einbandanimation und Druckansicht.
+- `app.js`: einfache Zustände für Einband, Öffnen und Lesen; Kapitelwahl, lokale Bearbeitung und Export.
+- `reports.js`: alle 13 Originaleinträge.
+- `assets/supada-itami.png`: Charakterbild von Supada Itami.
+- `assets/konoha-emblem.svg`: Konoha-Blattsymbol als skalierbare Vektorgrafik.
 
-https://dantesparda0712.github.io/supada-itami-berichtsheft/
+Direktlinks wie `#start`, `#inhalt`, `#steckbrief`, `#bericht-13` und bestehende `#monat-13`-Links werden unterstützt. Browser-Zurück und -Vorwärts stellen die jeweilige Ansicht wieder her. Schriften und Bilder werden lokal ausgeliefert, ohne externe Schriftanfragen.
+
+## Quellen und Lizenzen
+
+Die Geometrie des Konoha-Blattsymbols stammt aus [Konohagakure.svg von Shisma auf Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Konohagakure.svg), als einfache geometrische Form gemeinfrei (PD-shape). Die Pfade wurden unverändert übernommen; Farben und Einbettung wurden angepasst. Es handelt sich um ein inoffizielles Fanprojekt.
+
+Cormorant Garamond und DM Sans werden unter der SIL Open Font License ausgeliefert. Lizenztexte liegen in `assets/fonts/`.
