@@ -2,141 +2,142 @@
 
 const $=id=>document.getElementById(id);
 const storageKey='supada-itami-reports-v1';
-const state={custom:{},filter:'Alle',search:'',sort:'oldest',currentReport:13,currentScene:0,motionOff:false};
+const state={custom:{},filter:'Alle',search:'',open:false,chapter:0,page:0,view:'contents',currentReport:1,motionOff:false};
 const escapeHtml=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const validDate=date=>typeof date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(date)&&date>='1900-01-01'&&date<='2100-12-31'&&!Number.isNaN(Date.parse(date+'T12:00:00Z'))&&new Date(date+'T12:00:00Z').toISOString().slice(0,10)===date;
 const dateText=date=>new Intl.DateTimeFormat('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'));
-const monthText=date=>new Intl.DateTimeFormat('de-DE',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'));
 const isRank=report=>report.category==='Rangaufstieg';
-function loadSavedReports(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(storageKey)||'{}');
-    if(!saved||typeof saved!=='object'||Array.isArray(saved))return;
-    for(const report of reports){const custom=saved[report.id];if(custom&&typeof custom.title==='string'&&typeof custom.body==='string'&&custom.title.trim()&&custom.body.trim()&&custom.title.length<=120&&custom.body.length<=8000){state.custom[report.id]={title:custom.title,body:custom.body,date:validDate(custom.date)?custom.date:report.date};}}
-  }catch{}
-}
+function loadSavedReports(){try{const saved=JSON.parse(localStorage.getItem(storageKey)||'{}');if(!saved||typeof saved!=='object'||Array.isArray(saved))return;for(const report of reports){const custom=saved[report.id];if(custom&&typeof custom.title==='string'&&typeof custom.body==='string'&&custom.title.trim()&&custom.body.trim()&&custom.title.length<=120&&custom.body.length<=8000)state.custom[report.id]={title:custom.title,body:custom.body,date:validDate(custom.date)?custom.date:report.date};}}catch{}}
 function getReport(id){const original=reports.find(report=>report.id===Number(id));if(!original)return null;const custom=state.custom[original.id];return{...original,...custom,title:isRank(original)?original.title:(custom?.title||original.title),date:isRank(original)?original.date:(custom?.date||original.date)};}
 loadSavedReports();
 try{const preference=localStorage.getItem('supada-itami-motion');state.motionOff=preference?preference==='off':window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch{state.motionOff=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}
-let toastTimer;
+let toastTimer,turnTimer,resizeTimer;
 function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,4200);}
 function setMotion(off){state.motionOff=off;document.body.classList.toggle('still',off);document.body.classList.toggle('motion-allowed',!off);$('motion-toggle').setAttribute('aria-pressed',String(off));$('motion-label').textContent=off?'Bewegung an':'Bewegung aus';}
 setMotion(state.motionOff);
+document.querySelector('.embers').innerHTML=Array.from({length:15},(_,index)=>`<i style="--left:${(index*37+9)%100}%;--speed:${12+index%8}s;--delay:-${index*.91}s"></i>`).join('');
 
-function reportMarkup(id){
-  const report=getReport(id),custom=Boolean(state.custom[id]);
-  const symbol=isRank(report)?'忍':report.category==='Training'?'術':'巻';
-  const sceneClass=report.category==='Training'?'forest-background':'village-background';
-  const next=id<13?`#bericht-${id+1}`:'#ausblick';
-  return `<div class="scene-background ${sceneClass}" aria-hidden="true"></div><span class="scene-kanji" aria-hidden="true">${symbol}</span><div class="chapter-heading"><p class="eyebrow"><span></span>BERICHT ${String(id).padStart(2,'0')} / ${escapeHtml(monthText(report.date).toLocaleUpperCase('de'))}</p><h2>${escapeHtml(report.title)}</h2></div><div class="scroll-frame"><article class="scroll-paper parchment" tabindex="0" aria-label="Vollständiger Bericht ${id}: ${escapeHtml(report.title)}"><div class="paper-content"><div class="paper-meta"><time datetime="${report.date}">${dateText(report.date)} · ${escapeHtml(report.topic||report.category)}</time><span>${custom?'MEIN PERSÖNLICHER TEXT':'BEARBEITBARER TEXTVORSCHLAG'}</span></div><div class="paper-body">${report.body.split(/\n\s*\n/).map(paragraph=>`<p>${escapeHtml(paragraph)}</p>`).join('')}</div><div class="paper-footer"><span class="ink-stamp" aria-hidden="true">忍</span><div><button class="paper-link" type="button" data-edit="${id}">Text anpassen ✎</button><a class="paper-link" href="${next}">Nächstes Kapitel →</a></div></div></div></article><span class="wood-rod left-rod" aria-hidden="true"></span><span class="wood-rod right-rod" aria-hidden="true"></span></div><span class="report-number-bg" aria-hidden="true">${String(id).padStart(2,'0')}</span><div class="scene-bottom"><span>${escapeHtml(report.category.toUpperCase())} / SUPADA ITAMI</span><span>${String(id).padStart(2,'0')} — 13</span></div>`;
+function pageBudget(){const width=window.innerWidth,height=window.innerHeight;if(width<=500)return Math.max(55,Math.min(115,Math.floor((height-400)/3.8)));return Math.max(65,Math.min(145,Math.floor((height-420)*(width>1100?.32:.26))));}
+let wordsPerPage=pageBudget();
+// Split long paragraphs without dropping text. The page body can also scroll at larger text sizes.
+function paginate(body,budget=wordsPerPage){
+  const pages=[];let current=[],used=0;
+  const flush=()=>{if(current.length){pages.push(current);current=[];used=0;}};
+  for(const paragraph of body.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean)){
+    const words=paragraph.match(/\S+/g)||[];
+    if(words.length<=budget){if(used+words.length+(current.length?5:0)>budget)flush();current.push(paragraph);used+=words.length+5;continue;}
+    let offset=0;
+    while(offset<words.length){
+      if(budget-used<20)flush();
+      const available=Math.max(1,budget-used);let count=Math.min(available,words.length-offset);
+      if(offset+count<words.length){for(let n=count;n>=Math.floor(count*.68);n--){if(/[.!?][”"»)]?$/.test(words[offset+n-1])){count=n;break;}}}
+      current.push(words.slice(offset,offset+count).join(' '));used+=count+5;offset+=count;
+      if(offset<words.length)flush();
+    }
+  }
+  flush();return pages.length?pages:[['']];
 }
-function renderScenes(){
-  $('berichte').innerHTML=reports.map(original=>`<section class="scene report-scene${isRank(original)?' rank-report':''}" id="bericht-${original.id}" tabindex="-1" data-report="${original.id}" data-scene-label="${escapeHtml(original.title)}">${reportMarkup(original.id)}</section>`).join('');
-  $('edit-select').innerHTML=reports.map(original=>`<option value="${original.id}">${String(original.id).padStart(2,'0')} · ${escapeHtml(getReport(original.id).title)}</option>`).join('');
-}
-renderScenes();
-const scenes=[...document.querySelectorAll('main .scene')];
-function buildRail(){
-  $('chapter-rail').innerHTML=scenes.map((scene,index)=>{const number=scene.dataset.report;const label=number?`${String(number).padStart(2,'0')} · ${getReport(number).title}`:scene.dataset.sceneLabel;return `<a class="chapter-link" href="#${scene.id}" aria-label="${escapeHtml(label)}"${index===state.currentScene?' aria-current="step"':''}><i aria-hidden="true"></i><span>${escapeHtml(number?String(number).padStart(2,'0'):label)}</span></a>`;}).join('');
-}
-buildRail();
-for(const host of document.querySelectorAll('.embers'))host.innerHTML=Array.from({length:20},(_,index)=>`<i style="--left:${(index*37+9)%100}%;--speed:${9+index%8}s;--delay:-${index*.71}s"></i>`).join('');
-
-function filteredReports(){return reports.map(original=>getReport(original.id)).filter(report=>(state.filter==='Alle'||report.category===state.filter)&&(!state.search||`${report.title} ${report.body} ${report.category} ${dateText(report.date)}`.toLocaleLowerCase('de').includes(state.search))).sort((a,b)=>state.sort==='newest'?b.date.localeCompare(a.date):a.date.localeCompare(b.date));}
-function renderArchive(){
+const getPages=id=>paginate(getReport(id).body);
+function absolutePage(id,page=0){let number=3;for(const report of reports){if(report.id===Number(id))return number+page;number+=getPages(report.id).length;}return 2;}
+function filteredReports(){return reports.map(report=>getReport(report.id)).filter(report=>(state.filter==='Alle'||report.category===state.filter)&&(!state.search||`${report.title} ${report.body} ${report.category} ${dateText(report.date)}`.toLocaleLowerCase('de').includes(state.search)));}
+function renderContents(){
   const visible=filteredReports();
-  $('archive-list').innerHTML=visible.map(report=>`<li><a href="#bericht-${report.id}" class="archive-link"><span>${String(report.id).padStart(2,'0')}</span><span>${escapeHtml(report.title)}<small>${dateText(report.date)} · ${escapeHtml(report.category)} · ${state.custom[report.id]?'MEIN TEXT':'TEXTVORSCHLAG'}</small></span><span aria-hidden="true">↗</span></a></li>`).join('');
-  $('result-count').textContent=`${visible.length} von 13 Kapiteln`;
+  $('chapter-list').innerHTML=visible.map(report=>`<li><button type="button" class="chapter-item${isRank(report)?' rank-item':''}" data-chapter="${report.id}" title="${escapeHtml(report.title)}"${state.chapter===report.id?' aria-current="page"':''}><span class="chapter-index">${String(report.id).padStart(2,'0')}</span><span class="chapter-copy"><span class="chapter-title">${escapeHtml(report.title)}</span><span class="chapter-meta">${dateText(report.date)} · ${escapeHtml(report.category)}</span></span><span class="chapter-dots" aria-hidden="true"></span><span class="chapter-page-number" aria-label="Buchseite ${absolutePage(report.id)}">${absolutePage(report.id)}</span></button></li>`).join('');
+  $('result-count').textContent=visible.length===13?'13 Kapitel':`${visible.length} von 13 Kapiteln`;
   $('empty-state').hidden=visible.length>0;
+  $('book-bookmarks').innerHTML=reports.map(report=>`<button type="button" class="book-bookmark${isRank(report)?' rank-mark':''}" data-chapter="${report.id}" aria-label="Kapitel ${report.id}: ${escapeHtml(getReport(report.id).title)}"${state.chapter===report.id?' aria-current="page"':''}>${String(report.id).padStart(2,'0')}</button>`).join('');
 }
-renderArchive();
-
-function normalizedHash(hash){const monthAlias=hash.match(/^#monat-(\d+)$/);if(monthAlias)return `bericht-${monthAlias[1]}`;return hash.replace(/^#/,'');}
-function goTo(target,options={}){
-  const id=normalizedHash(target),element=$(id);
-  if(!element)return false;
-  for(const dialog of document.querySelectorAll('dialog[open]'))dialog.close();
-  element.scrollIntoView({behavior:options.instant||state.motionOff?'auto':'smooth',block:'start'});
-  const sceneIndex=scenes.findIndex(scene=>scene.id===id);
-  if(sceneIndex>=0){state.currentScene=sceneIndex;if(scenes[sceneIndex].dataset.report)state.currentReport=Number(scenes[sceneIndex].dataset.report);}
-  if(options.focus!==false)element.focus?.({preventScroll:true});
-  try{history.replaceState(null,'',`#${id}`);}catch{}
-  return true;
+function welcomeMarkup(){return `<div class="welcome-page"><p class="welcome-label">DIE PERSON HINTER DEN KAPITELN</p><h2 id="reader-title">Supada<br>Itami<span style="color:var(--red)">.</span></h2><p class="welcome-subtitle">CHUNIN · RAITON · ZENKAI DE</p><figure class="welcome-portrait"><img src="assets/supada-itami.png" alt="Supada Itami mit weißen Haaren, roten Gesichtsmarkierungen und Chunin-Weste." width="1287" height="1222"></figure><p class="welcome-intro">Jedes Training, jede Aufgabe und jeder Schritt nach vorn hat seinen Platz in diesem Buch. Wähle links ein Kapitel oder blättere zur ersten Seite.</p><dl class="welcome-facts"><div><dt>HEIMAT</dt><dd>Konohagakure</dd></div><div><dt>RANG</dt><dd>Chunin</dd></div><div><dt>ELEMENT</dt><dd>Raiton · Blitz</dd></div><div><dt>MEIN FOKUS</dt><dd>Taijutsu &amp; Chakra</dd></div></dl><blockquote class="welcome-quote">„Mein nächster Schritt ist immer nach vorn.“</blockquote><div class="welcome-ranks"><button type="button" data-chapter="6"><span>Neuer Rang: Bestätigter Genin</span><time datetime="2026-10-28">28.10.2026</time></button><button type="button" data-chapter="13"><span>Neuer Rang: Chunin</span><time datetime="2026-11-04">04.11.2026</time></button></div></div>`;}
+function renderReader(direction='none'){
+  const reader=$('reader-page');reader.classList.remove('turning-forward','turning-back');clearTimeout(turnTimer);
+  if(state.chapter===0){
+    $('reader-content').innerHTML=welcomeMarkup();$('running-chapter').textContent='DIE SHINOBI-AKTE';$('running-date').textContent='BAND I · 2026';$('reading-position').textContent='DEIN BUCH BEGINNT HIER';$('page-number').textContent='2';$('previous-page').disabled=true;$('next-page').disabled=false;
+  }else{
+    const report=getReport(state.chapter),pages=getPages(state.chapter);state.page=Math.min(Math.max(0,state.page),pages.length-1);
+    $('reader-content').innerHTML=`<article class="chapter-content"><p class="reader-kicker">KAPITEL ${String(report.id).padStart(2,'0')} · ${escapeHtml(report.category.toUpperCase())}${state.page?' · FORTSETZUNG':''}</p><h2 id="reader-title" class="reader-title">${escapeHtml(report.title)}</h2><div class="reader-date"><time datetime="${report.date}">${dateText(report.date)} · ${escapeHtml(report.topic||report.category)}</time><span>${state.custom[report.id]?'MEIN TEXT':'TEXTVORSCHLAG'}</span></div><div class="chapter-body" tabindex="0" aria-label="Text auf Buchseite ${absolutePage(report.id,state.page)}">${pages[state.page].map(paragraph=>`<p>${escapeHtml(paragraph)}</p>`).join('')}</div><div class="chapter-tail"><span class="ink-stamp" aria-hidden="true">忍</span><button type="button" class="edit-chapter-link" data-edit="${report.id}">Kapitel bearbeiten ✎</button></div></article>`;
+    $('running-chapter').textContent='SUPADA ITAMI · BERICHTSHEFT';$('running-date').textContent=`KAPITEL ${String(report.id).padStart(2,'0')}`;
+    $('reading-position').textContent=`KAPITEL ${report.id} VON 13 · SEITE ${state.page+1} VON ${pages.length}`;$('page-number').textContent=String(absolutePage(report.id,state.page));$('previous-page').disabled=false;$('next-page').disabled=report.id===13&&state.page===pages.length-1;
+  }
+  if(direction!=='none'&&!state.motionOff){void reader.offsetWidth;reader.classList.add(direction==='back'?'turning-back':'turning-forward');turnTimer=setTimeout(()=>reader.classList.remove('turning-forward','turning-back'),450);}
 }
-function markScene(index){
-  if(index<0)return;
-  state.currentScene=index;
-  scenes.forEach((scene,i)=>scene.classList.toggle('active',i===index));
-  if(scenes[index].dataset.report)state.currentReport=Number(scenes[index].dataset.report);
-  document.querySelectorAll('.chapter-link').forEach((link,i)=>{if(i===index)link.setAttribute('aria-current','step');else link.removeAttribute('aria-current');});
+function setView(view,focus=false){
+  state.view=view;$('open-spread').classList.toggle('show-reader',view==='reader');const mobile=window.innerWidth<=800;
+  $('mobile-contents').setAttribute('aria-pressed',String(view==='contents'));$('mobile-reader').setAttribute('aria-pressed',String(view==='reader'));
+  $('contents-page').setAttribute('aria-hidden',String(mobile&&view==='reader'));$('reader-page').setAttribute('aria-hidden',String(mobile&&view==='contents'));$('contents-page').inert=mobile&&view==='reader';$('reader-page').inert=mobile&&view==='contents';
+  if(focus){const target=view==='reader'?$('reader-page'):$('contents-page');target.focus({preventScroll:true});}
 }
-if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>{const visible=entries.filter(entry=>entry.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio);if(visible.length)markScene(scenes.indexOf(visible[0].target));},{threshold:[.3,.55,.75]});scenes.forEach(scene=>observer.observe(scene));}
-let scrollScheduled=false;
-function updateProgress(){const total=document.documentElement.scrollHeight-window.innerHeight;const progress=total>0?Math.min(1,Math.max(0,window.scrollY/total)):0;$('progress-fill').style.transform=`scaleX(${progress})`;scrollScheduled=false;}
-window.addEventListener('scroll',()=>{if(!scrollScheduled){scrollScheduled=true;requestAnimationFrame(updateProgress);}},{passive:true});
-window.addEventListener('resize',updateProgress);
-updateProgress();
+function writeHash(hash){try{history.replaceState(null,'',hash);}catch{}}
+function openBook(options={}){
+  state.open=true;$('open-spread').hidden=false;$('book-tools').hidden=false;$('buch').classList.add('is-open');$('closed-book').setAttribute('aria-hidden','true');$('closed-book').inert=true;$('cover-heading').setAttribute('aria-hidden','true');$('cover-callout').setAttribute('aria-hidden','true');$('cover-callout').inert=true;$('open-book-cover').disabled=true;$('open-book').disabled=true;
+  setView(options.view||'contents',Boolean(options.focus));renderContents();renderReader();if(options.hash!==false)writeHash(state.chapter?`#bericht-${state.chapter}`:'#inhalt');
+}
+function closeBook(options={}){
+  state.open=false;$('open-spread').hidden=true;$('book-tools').hidden=true;$('buch').classList.remove('is-open');$('closed-book').setAttribute('aria-hidden','false');$('closed-book').inert=false;$('cover-heading').setAttribute('aria-hidden','false');$('cover-callout').setAttribute('aria-hidden','false');$('cover-callout').inert=false;$('open-book-cover').disabled=false;$('open-book').disabled=false;
+  if(options.hash!==false)writeHash('#start');if(options.focus!==false)$('open-book-cover').focus({preventScroll:true});
+}
+function selectChapter(id,page=0,options={}){
+  id=Number(id);if(!getReport(id))return false;const old=state.chapter*100+state.page;
+  if(!state.open)openBook({hash:false});state.chapter=id;state.currentReport=id;state.page=Math.min(Math.max(0,page),getPages(id).length-1);
+  setView('reader',options.focus!==false);renderContents();renderReader(options.animate===false?'none':id*100+state.page<old?'back':'forward');if(options.hash!==false)writeHash(`#bericht-${id}`);return true;
+}
+function showProfile(options={}){if(!state.open)openBook({hash:false});state.chapter=0;state.page=0;setView('reader',options.focus!==false);renderContents();renderReader();if(options.hash!==false)writeHash('#steckbrief');}
+function turnPage(delta){
+  if(!state.open){openBook({focus:true});return;}
+  if(state.chapter===0){if(delta>0)selectChapter(1,0,{focus:false});return;}
+  const pages=getPages(state.chapter),next=state.page+delta;
+  if(next>=0&&next<pages.length){state.page=next;renderReader(delta<0?'back':'forward');return;}
+  if(delta>0&&state.chapter<13)selectChapter(state.chapter+1,0,{focus:false});
+  else if(delta<0&&state.chapter>1)selectChapter(state.chapter-1,getPages(state.chapter-1).length-1,{focus:false});
+  else if(delta<0)showProfile({focus:false});
+}
+function goTo(hash,options={}){
+  const match=String(hash).match(/^#(?:bericht|monat)-(\d+)$/);if(match)return selectChapter(Number(match[1]),0,options);
+  if(['#start',''].includes(hash)){closeBook(options);return true;}
+  if(['#buch','#inhalt','#berichte'].includes(hash)){openBook({focus:options.focus!==false,hash:options.hash});return true;}
+  if(['#steckbrief','#rangweg'].includes(hash)){showProfile(options);return true;}
+  if(hash==='#ausblick')return selectChapter(13,getPages(13).length-1,options);
+  return false;
+}
+$('contents-page').tabIndex=-1;
+$('open-book-cover').addEventListener('click',()=>openBook({focus:true}));$('open-book').addEventListener('click',()=>openBook({focus:true}));$('close-book').addEventListener('click',()=>closeBook());
+$('show-contents').addEventListener('click',()=>{if(!state.open)openBook({focus:true});else{setView('contents',true);writeHash('#inhalt');}});
+$('show-profile').addEventListener('click',()=>showProfile());$('mobile-contents').addEventListener('click',()=>setView('contents',true));$('mobile-reader').addEventListener('click',()=>setView('reader',true));
+$('previous-page').addEventListener('click',()=>turnPage(-1));$('next-page').addEventListener('click',()=>turnPage(1));
 document.addEventListener('click',event=>{
-  const edit=event.target.closest('[data-edit]');if(edit){openEditor(Number(edit.dataset.edit));return;}
-  const close=event.target.closest('[data-close]');if(close){$(close.dataset.close)?.close();return;}
-  const anchor=event.target.closest('a[href^="#"]');
-  if(anchor&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey&&goTo(anchor.getAttribute('href')))event.preventDefault();
+  const chapter=event.target.closest?.('[data-chapter]');if(chapter){selectChapter(Number(chapter.dataset.chapter));return;}
+  const edit=event.target.closest?.('[data-edit]');if(edit){openEditor(Number(edit.dataset.edit));return;}
+  const link=event.target.closest?.('a[href^="#"]');if(link&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey&&goTo(link.getAttribute('href')))event.preventDefault();
 });
-window.addEventListener('hashchange',()=>{if(location.hash)goTo(location.hash,{instant:true});});
+$('chapter-search').addEventListener('input',event=>{state.search=event.target.value.trim().toLocaleLowerCase('de');renderContents();});$('chapter-category').addEventListener('change',event=>{state.filter=event.target.value;renderContents();});$('reset-search').addEventListener('click',()=>{state.search='';state.filter='Alle';$('chapter-search').value='';$('chapter-category').value='Alle';renderContents();$('chapter-search').focus();});
 
-function fillEditor(id){
-  const report=getReport(id);if(!report)return;
-  state.currentReport=Number(id);$('edit-select').value=String(id);$('edit-title').value=report.title;$('edit-title').readOnly=isRank(report);$('edit-date').value=report.date;$('edit-date').readOnly=isRank(report);$('edit-body').value=report.body;
-  $('editor-note').textContent=isRank(report)?'Rang und Datum sind festgelegt. Ergänze hier deine tatsächlichen Tätigkeiten. Dein Text wird auf diesem Gerät im Browser gespeichert.':'Passe den Textvorschlag und das Datum an deine Erlebnisse an. Dein Bericht wird auf diesem Gerät im Browser gespeichert.';
-}
-function openEditor(id=state.currentReport){fillEditor(id);$('archive-dialog').close();if(!$('edit-dialog').open)$('edit-dialog').showModal();}
-$('open-editor').addEventListener('click',()=>openEditor());
-$('edit-select').addEventListener('change',event=>fillEditor(Number(event.target.value)));
-$('open-archive').addEventListener('click',()=>{renderArchive();$('archive-dialog').showModal();});
+function fillEditor(id){const report=getReport(id);if(!report)return;state.currentReport=Number(id);$('edit-select').value=String(id);$('edit-title').value=report.title;$('edit-title').readOnly=isRank(report);$('edit-date').value=report.date;$('edit-date').readOnly=isRank(report);$('edit-body').value=report.body;$('editor-note').textContent=isRank(report)?'Rang und Datum bleiben erhalten. Ergänze hier deine tatsächlichen Tätigkeiten. Dein Text wird auf diesem Gerät im Browser gespeichert.':'Passe den Textvorschlag und das Datum an deine Erlebnisse an. Dein Kapitel wird auf diesem Gerät im Browser gespeichert.';}
+function renderEditorChoices(){$('edit-select').innerHTML=reports.map(report=>`<option value="${report.id}">${String(report.id).padStart(2,'0')} · ${escapeHtml(getReport(report.id).title)}</option>`).join('');}
+function openEditor(id=state.currentReport){renderEditorChoices();fillEditor(id);if(!$('edit-dialog').open)$('edit-dialog').showModal();}
+$('open-editor').addEventListener('click',()=>openEditor());$('edit-select').addEventListener('change',event=>fillEditor(Number(event.target.value)));$('close-editor').addEventListener('click',()=>$('edit-dialog').close());$('cancel-edit').addEventListener('click',()=>$('edit-dialog').close());
 $('edit-form').addEventListener('submit',event=>{
-  event.preventDefault();const report=getReport(Number($('edit-select').value));
-  const title=$('edit-title').value.trim(),body=$('edit-body').value.trim(),date=$('edit-date').value;
-  if(!title||title.length>120||!body||body.length>8000||!validDate(date))return;
+  event.preventDefault();const report=getReport(Number($('edit-select').value));const title=$('edit-title').value.trim(),body=$('edit-body').value.trim(),date=$('edit-date').value;
+  if(!report||!title||title.length>120||!body||body.length>8000||!validDate(date))return;
   const next={...state.custom,[report.id]:{title:isRank(report)?report.title:title,date:isRank(report)?report.date:date,body}};
   try{localStorage.setItem(storageKey,JSON.stringify(next));}catch{toast('Speichern ist in diesem Browser nicht möglich. Dein Text bleibt im Editor.');return;}
-  state.custom=next;
-  const scene=$(`bericht-${report.id}`);scene.innerHTML=reportMarkup(report.id);scene.dataset.sceneLabel=getReport(report.id).title;
-  const selected=$('edit-select').querySelector(`option[value="${report.id}"]`);if(selected)selected.textContent=`${String(report.id).padStart(2,'0')} · ${getReport(report.id).title}`;
-  buildRail();renderArchive();$('edit-dialog').close();toast('Dein Bericht wurde auf diesem Gerät gespeichert.');
+  state.custom=next;renderContents();renderReader();$('edit-dialog').close();toast('Dein Kapitel wurde auf diesem Gerät gespeichert.');
 });
-$('report-search').addEventListener('input',event=>{state.search=event.target.value.trim().toLocaleLowerCase('de');renderArchive();});
-$('report-category').addEventListener('change',event=>{state.filter=event.target.value;renderArchive();});
-$('report-sort').addEventListener('change',event=>{state.sort=event.target.value;renderArchive();});
-$('reset-search').addEventListener('click',()=>{state.search='';state.filter='Alle';$('report-search').value='';$('report-category').value='Alle';renderArchive();$('report-search').focus();});
 $('motion-toggle').addEventListener('click',()=>{setMotion(!state.motionOff);try{localStorage.setItem('supada-itami-motion',state.motionOff?'off':'on');}catch{}toast(state.motionOff?'Bewegung ausgeschaltet.':'Bewegung eingeschaltet.');});
 document.addEventListener('keydown',event=>{
-  if(event.defaultPrevented||event.ctrlKey||event.metaKey||event.altKey)return;
-  if($('opening').open){if(event.key==='Enter'){event.preventDefault();dismissOpening(true);}return;}
-  if(document.querySelector('dialog[open]')||event.target.closest('input,textarea,select,[contenteditable],.scroll-paper'))return;
+  if(event.defaultPrevented||event.ctrlKey||event.metaKey||event.altKey||document.querySelector('dialog[open]')||event.target.closest?.('input,textarea,select,[contenteditable]'))return;
   const key=event.key.toLowerCase();
-  if(key==='e'){event.preventDefault();openEditor();return;}
-  let target;
-  if(['arrowdown','arrowright','pagedown','j'].includes(key))target=scenes[Math.min(scenes.length-1,state.currentScene+1)];
-  else if(['arrowup','arrowleft','pageup','k'].includes(key))target=scenes[Math.max(0,state.currentScene-1)];
-  else if(key==='home')target=scenes[0];else if(key==='end')target=scenes[scenes.length-1];
-  else if(/^[1-9]$/.test(key))target=$(`bericht-${key}`);
-  if(target){event.preventDefault();goTo(`#${target.id}`);}
+  if(!state.open){if(key==='enter'){event.preventDefault();openBook({focus:true});}return;}
+  if(['arrowright','pagedown'].includes(key)){event.preventDefault();turnPage(1);}else if(['arrowleft','pageup'].includes(key)){event.preventDefault();turnPage(-1);}else if(key==='escape'){event.preventDefault();closeBook();}else if(key==='e'){event.preventDefault();openEditor();}else if(key==='i'||key==='home'){event.preventDefault();setView('contents',true);}else if(key==='end'){event.preventDefault();selectChapter(13,getPages(13).length-1);}else if(/^[1-9]$/.test(key)){event.preventDefault();selectChapter(Number(key));}
 });
+let touchStart=null;
+$('reader-page').addEventListener('touchstart',event=>{const touch=event.touches[0];touchStart=touch?{x:touch.clientX,y:touch.clientY}:null;},{passive:true});
+$('reader-page').addEventListener('touchend',event=>{const touch=event.changedTouches[0];if(!touchStart||!touch)return;const dx=touch.clientX-touchStart.x,dy=touch.clientY-touchStart.y;touchStart=null;if(window.getSelection()?.toString())return;if(Math.abs(dx)>75&&Math.abs(dx)>Math.abs(dy)*1.5)turnPage(dx<0?1:-1);},{passive:true});
+window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{const budget=pageBudget();if(budget!==wordsPerPage){wordsPerPage=budget;renderContents();renderReader();}setView(state.view);},140);});
+window.addEventListener('hashchange',()=>goTo(location.hash,{hash:false,animate:false,focus:false}));
 
-function exportText(){return 'Berichtsheft für Zenkai DE\nSupada Itami · Chunin\n\nFiktive Musterberichte für dein Rollenspiel. Unbearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.\n\n'+reports.map(original=>{const report=getReport(original.id);return `Bericht ${String(report.id).padStart(2,'0')} — ${report.title} · ${dateText(report.date)}${state.custom[report.id]?'':' [Textvorschlag]'}\n\n${report.body}`;}).join('\n\n────────────────────\n\n');}
-$('download').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob(['\uFEFF'+exportText()],{type:'text/plain;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='Berichtsheft_Supada_Itami.txt';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Alle 13 Berichte wurden zum Herunterladen bereitgestellt.');});
-function preparePrint(){if($('print-reports'))return;const section=document.createElement('section');section.id='print-reports';section.innerHTML='<h1>Supada Itami · Shinobi-Berichtsheft</h1><p>Chunin seit 04.11.2026 · Bestätigter Genin seit 28.10.2026</p><p>Fiktive Musterberichte für dein Rollenspiel. Unbearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.</p>'+reports.map(original=>{const report=getReport(original.id);return `<article><h2>${escapeHtml(report.title)}</h2><p>${dateText(report.date)} · ${escapeHtml(report.category)}${state.custom[report.id]?'':' · Textvorschlag'}</p>${report.body.split(/\n\s*\n/).map(p=>`<p>${escapeHtml(p)}</p>`).join('')}</article>`;}).join('');document.body.append(section);}
+function exportText(){return 'Das Konoha-Buch\nSupada Itami · Chunin\n\nFiktive Musterberichte für dein Rollenspiel. Unbearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.\n\n'+reports.map(original=>{const report=getReport(original.id);return `Kapitel ${String(report.id).padStart(2,'0')} — ${report.title} · ${dateText(report.date)}${state.custom[report.id]?'':' [Textvorschlag]'}\n\n${report.body}`;}).join('\n\n────────────────────\n\n');}
+$('download').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob(['\uFEFF'+exportText()],{type:'text/plain;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download='Konoha_Buch_Supada_Itami.txt';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Alle 13 Kapitel wurden zum Herunterladen bereitgestellt.');});
+function preparePrint(){if($('print-reports'))return;const section=document.createElement('section');section.id='print-reports';section.innerHTML='<h1>Das Konoha-Buch · Supada Itami</h1><p>Chunin seit 04.11.2026 · Bestätigter Genin seit 28.10.2026</p><p>Fiktive Musterberichte für dein Rollenspiel. Unbearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.</p>'+reports.map(original=>{const report=getReport(original.id);return `<article><h2>Kapitel ${report.id} · ${escapeHtml(report.title)}</h2><p>${dateText(report.date)} · ${escapeHtml(report.category)}${state.custom[report.id]?'':' · Textvorschlag'}</p>${report.body.split(/\n\s*\n/).map(p=>`<p>${escapeHtml(p)}</p>`).join('')}</article>`;}).join('');document.body.append(section);}
 function finishPrint(){$('print-reports')?.remove();}
-window.addEventListener('beforeprint',preparePrint);window.addEventListener('afterprint',finishPrint);
-$('print').addEventListener('click',()=>{preparePrint();window.print();});
-
-function dismissOpening(animate=false){
-  const dialog=$('opening');if(!dialog.open||dialog.classList.contains('is-opening'))return;
-  try{sessionStorage.setItem('supada-itami-intro-seen','1');}catch{}
-  const done=()=>{dialog.close();dialog.classList.remove('is-opening');$('start').focus({preventScroll:true});};
-  if(animate&&!state.motionOff){dialog.classList.add('is-opening');setTimeout(done,650);}else done();
-}
-$('open-scroll').addEventListener('click',()=>dismissOpening(true));$('skip-opening').addEventListener('click',()=>dismissOpening());
-$('opening').addEventListener('cancel',event=>{event.preventDefault();dismissOpening();});
-let seenIntro=false;try{seenIntro=sessionStorage.getItem('supada-itami-intro-seen')==='1';}catch{}
-if(location.hash){requestAnimationFrame(()=>goTo(location.hash,{instant:true,focus:false}));}else if(!seenIntro&&!state.motionOff)$('opening').showModal();
+window.addEventListener('beforeprint',preparePrint);window.addEventListener('afterprint',finishPrint);$('print').addEventListener('click',()=>{preparePrint();window.print();});
+renderContents();renderReader();renderEditorChoices();
+if(location.hash&&location.hash!=='#start')goTo(location.hash,{hash:false,animate:false,focus:false});
