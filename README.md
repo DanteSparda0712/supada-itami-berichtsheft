@@ -2,6 +2,8 @@
 
 Interaktives Konoha-Buch für Supada Itami in Zenkai DE. Der grüne Buchdeckel mit Konoha-Symbol, Charakterporträt und Namen lässt sich öffnen. Das aufgeschlagene Buch zeigt links ein Inhaltsverzeichnis mit 13 Kapiteln und rechts den Steckbrief oder die gewählte Buchseite. Längere Kapitel werden vollständig auf mehrere Seiten verteilt; Pfeile, Pfeiltasten und Wischgesten blättern durch das Buch. Auf dem Handy wechseln die Ansichten Inhalt / Buchseite. Die vier ursprünglichen Musterberichte und alle 13 vollständigen Datensätze bleiben erhalten.
 
+Die Öffnungsanimation hebt das Buch leicht an, klappt den Deckel in 3D auf und fächert vier Papierblätter auf. Anschließend erscheinen Inhaltsverzeichnis und Buchseite. Die Animation dauert 1,8 Sekunden, lässt sich mit Escape abbrechen und läuft bei jedem erneuten Öffnen. Reduzierte Bewegung und direkte Kapitellinks überspringen sie. Der Bewegungsschalter ist auch auf dem Handy erreichbar.
+
 - Neuer Rang: Bestätigter Genin · 28.10.2026
 - Neuer Rang: Chunin · 04.11.2026
 

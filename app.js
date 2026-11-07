@@ -2,7 +2,8 @@
 
 const $=id=>document.getElementById(id);
 const storageKey='supada-itami-reports-v1';
-const state={custom:{},filter:'Alle',search:'',open:false,chapter:0,page:0,view:'contents',currentReport:1,motionOff:false};
+const state={custom:{},filter:'Alle',search:'',open:false,opening:false,chapter:0,page:0,view:'contents',currentReport:1,motionOff:false};
+const BOOK_OPENING_MS=1800;
 const escapeHtml=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const validDate=date=>typeof date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(date)&&date>='1900-01-01'&&date<='2100-12-31'&&!Number.isNaN(Date.parse(date+'T12:00:00Z'))&&new Date(date+'T12:00:00Z').toISOString().slice(0,10)===date;
 const dateText=date=>new Intl.DateTimeFormat('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'));
@@ -11,9 +12,9 @@ function loadSavedReports(){try{const saved=JSON.parse(localStorage.getItem(stor
 function getReport(id){const original=reports.find(report=>report.id===Number(id));if(!original)return null;const custom=state.custom[original.id];return{...original,...custom,title:isRank(original)?original.title:(custom?.title||original.title),date:isRank(original)?original.date:(custom?.date||original.date)};}
 loadSavedReports();
 try{const preference=localStorage.getItem('supada-itami-motion');state.motionOff=preference?preference==='off':window.matchMedia('(prefers-reduced-motion: reduce)').matches;}catch{state.motionOff=window.matchMedia('(prefers-reduced-motion: reduce)').matches;}
-let toastTimer,turnTimer,resizeTimer;
+let toastTimer,turnTimer,resizeTimer,openingTimer,openingFocus=false;
 function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,4200);}
-function setMotion(off){state.motionOff=off;document.body.classList.toggle('still',off);document.body.classList.toggle('motion-allowed',!off);$('motion-toggle').setAttribute('aria-pressed',String(off));$('motion-label').textContent=off?'Bewegung an':'Bewegung aus';}
+function setMotion(off){state.motionOff=off;document.body.classList.toggle('still',off);document.body.classList.toggle('motion-allowed',!off);$('motion-toggle').setAttribute('aria-pressed',String(off));$('motion-toggle').setAttribute('aria-label',off?'Buchanimationen einschalten':'Buchanimationen ausschalten');$('motion-label').textContent=off?'Bewegung an':'Bewegung aus';if(off&&state.opening)finishOpening();}
 setMotion(state.motionOff);
 document.querySelector('.embers').innerHTML=Array.from({length:15},(_,index)=>`<i style="--left:${(index*37+9)%100}%;--speed:${12+index%8}s;--delay:-${index*.91}s"></i>`).join('');
 
@@ -64,24 +65,34 @@ function setView(view,focus=false){
   state.view=view;$('open-spread').classList.toggle('show-reader',view==='reader');const mobile=window.innerWidth<=800;
   $('mobile-contents').setAttribute('aria-pressed',String(view==='contents'));$('mobile-reader').setAttribute('aria-pressed',String(view==='reader'));
   $('contents-page').setAttribute('aria-hidden',String(mobile&&view==='reader'));$('reader-page').setAttribute('aria-hidden',String(mobile&&view==='contents'));$('contents-page').inert=mobile&&view==='reader';$('reader-page').inert=mobile&&view==='contents';
+  if(focus&&state.opening){openingFocus=true;return;}
   if(focus){const target=view==='reader'?$('reader-page'):$('contents-page');target.focus({preventScroll:true});}
 }
 function writeHash(hash){try{history.replaceState(null,'',hash);}catch{}}
+function finishOpening(restoreFocus=true){
+  clearTimeout(openingTimer);const shouldFocus=openingFocus;openingFocus=false;state.opening=false;$('buch').classList.remove('is-opening');$('buch').removeAttribute('aria-busy');$('open-spread').inert=false;
+  if(state.open){$('opening-status').textContent='Buch geöffnet. 13 Kapitel stehen im Inhaltsverzeichnis.';if(restoreFocus&&shouldFocus)setView(state.view,true);}
+}
 function openBook(options={}){
-  state.open=true;$('open-spread').hidden=false;$('book-tools').hidden=false;$('buch').classList.add('is-open');$('closed-book').setAttribute('aria-hidden','true');$('closed-book').inert=true;$('cover-heading').setAttribute('aria-hidden','true');$('cover-callout').setAttribute('aria-hidden','true');$('cover-callout').inert=true;$('open-book-cover').disabled=true;$('open-book').disabled=true;
+  const animate=!state.open&&!state.motionOff&&options.animate!==false;
+  if(animate){state.opening=true;openingFocus=Boolean(options.focus);$('buch').style.setProperty('--book-opening-duration',`${BOOK_OPENING_MS}ms`);$('buch').classList.add('is-opening');$('buch').setAttribute('aria-busy','true');$('opening-status').textContent='Das Konoha-Buch öffnet sich.';$('open-spread').inert=true;clearTimeout(openingTimer);openingTimer=setTimeout(()=>finishOpening(),BOOK_OPENING_MS);}
+  state.open=true;$('open-spread').inert=state.opening;$('open-spread').hidden=false;$('book-tools').hidden=false;$('buch').classList.add('is-open');$('closed-book').setAttribute('aria-hidden','true');$('closed-book').inert=true;$('cover-heading').setAttribute('aria-hidden','true');$('cover-callout').setAttribute('aria-hidden','true');$('cover-callout').inert=true;$('open-book-cover').disabled=true;$('open-book').disabled=true;
   setView(options.view||'contents',Boolean(options.focus));renderContents();renderReader();if(options.hash!==false)writeHash(state.chapter?`#bericht-${state.chapter}`:'#inhalt');
 }
 function closeBook(options={}){
+  finishOpening(false);$('opening-status').textContent='Buch zugeklappt.';
   state.open=false;$('open-spread').hidden=true;$('book-tools').hidden=true;$('buch').classList.remove('is-open');$('closed-book').setAttribute('aria-hidden','false');$('closed-book').inert=false;$('cover-heading').setAttribute('aria-hidden','false');$('cover-callout').setAttribute('aria-hidden','false');$('cover-callout').inert=false;$('open-book-cover').disabled=false;$('open-book').disabled=false;
   if(options.hash!==false)writeHash('#start');if(options.focus!==false)$('open-book-cover').focus({preventScroll:true});
 }
 function selectChapter(id,page=0,options={}){
   id=Number(id);if(!getReport(id))return false;const old=state.chapter*100+state.page;
-  if(!state.open)openBook({hash:false});state.chapter=id;state.currentReport=id;state.page=Math.min(Math.max(0,page),getPages(id).length-1);
+  if(state.opening&&options.animate===false)finishOpening(false);
+  if(!state.open)openBook({hash:false,animate:options.animate});state.chapter=id;state.currentReport=id;state.page=Math.min(Math.max(0,page),getPages(id).length-1);
   setView('reader',options.focus!==false);renderContents();renderReader(options.animate===false?'none':id*100+state.page<old?'back':'forward');if(options.hash!==false)writeHash(`#bericht-${id}`);return true;
 }
-function showProfile(options={}){if(!state.open)openBook({hash:false});state.chapter=0;state.page=0;setView('reader',options.focus!==false);renderContents();renderReader();if(options.hash!==false)writeHash('#steckbrief');}
+function showProfile(options={}){if(!state.open)openBook({hash:false,animate:options.animate});state.chapter=0;state.page=0;setView('reader',options.focus!==false);renderContents();renderReader();if(options.hash!==false)writeHash('#steckbrief');}
 function turnPage(delta){
+  if(state.opening)return;
   if(!state.open){openBook({focus:true});return;}
   if(state.chapter===0){if(delta>0)selectChapter(1,0,{focus:false});return;}
   const pages=getPages(state.chapter),next=state.page+delta;
@@ -93,7 +104,7 @@ function turnPage(delta){
 function goTo(hash,options={}){
   const match=String(hash).match(/^#(?:bericht|monat)-(\d+)$/);if(match)return selectChapter(Number(match[1]),0,options);
   if(['#start',''].includes(hash)){closeBook(options);return true;}
-  if(['#buch','#inhalt','#berichte'].includes(hash)){openBook({focus:options.focus!==false,hash:options.hash});return true;}
+  if(['#buch','#inhalt','#berichte'].includes(hash)){openBook({focus:options.focus!==false,hash:options.hash,animate:options.animate});return true;}
   if(['#steckbrief','#rangweg'].includes(hash)){showProfile(options);return true;}
   if(hash==='#ausblick')return selectChapter(13,getPages(13).length-1,options);
   return false;
@@ -112,7 +123,7 @@ $('chapter-search').addEventListener('input',event=>{state.search=event.target.v
 
 function fillEditor(id){const report=getReport(id);if(!report)return;state.currentReport=Number(id);$('edit-select').value=String(id);$('edit-title').value=report.title;$('edit-title').readOnly=isRank(report);$('edit-date').value=report.date;$('edit-date').readOnly=isRank(report);$('edit-body').value=report.body;$('editor-note').textContent=isRank(report)?'Rang und Datum bleiben erhalten. Ergänze hier deine tatsächlichen Tätigkeiten. Dein Text wird auf diesem Gerät im Browser gespeichert.':'Passe den Textvorschlag und das Datum an deine Erlebnisse an. Dein Kapitel wird auf diesem Gerät im Browser gespeichert.';}
 function renderEditorChoices(){$('edit-select').innerHTML=reports.map(report=>`<option value="${report.id}">${String(report.id).padStart(2,'0')} · ${escapeHtml(getReport(report.id).title)}</option>`).join('');}
-function openEditor(id=state.currentReport){renderEditorChoices();fillEditor(id);if(!$('edit-dialog').open)$('edit-dialog').showModal();}
+function openEditor(id=state.currentReport){if(state.opening)finishOpening(false);renderEditorChoices();fillEditor(id);if(!$('edit-dialog').open)$('edit-dialog').showModal();}
 $('open-editor').addEventListener('click',()=>openEditor());$('edit-select').addEventListener('change',event=>fillEditor(Number(event.target.value)));$('close-editor').addEventListener('click',()=>$('edit-dialog').close());$('cancel-edit').addEventListener('click',()=>$('edit-dialog').close());
 $('edit-form').addEventListener('submit',event=>{
   event.preventDefault();const report=getReport(Number($('edit-select').value));const title=$('edit-title').value.trim(),body=$('edit-body').value.trim(),date=$('edit-date').value;
@@ -125,6 +136,7 @@ $('motion-toggle').addEventListener('click',()=>{setMotion(!state.motionOff);try
 document.addEventListener('keydown',event=>{
   if(event.defaultPrevented||event.ctrlKey||event.metaKey||event.altKey||document.querySelector('dialog[open]')||event.target.closest?.('input,textarea,select,[contenteditable]'))return;
   const key=event.key.toLowerCase();
+  if(state.opening){if(key==='escape'){event.preventDefault();closeBook();}else if(['enter','arrowright','arrowleft','pagedown','pageup'].includes(key))event.preventDefault();return;}
   if(!state.open){if(key==='enter'){event.preventDefault();openBook({focus:true});}return;}
   if(['arrowright','pagedown'].includes(key)){event.preventDefault();turnPage(1);}else if(['arrowleft','pageup'].includes(key)){event.preventDefault();turnPage(-1);}else if(key==='escape'){event.preventDefault();closeBook();}else if(key==='e'){event.preventDefault();openEditor();}else if(key==='i'||key==='home'){event.preventDefault();setView('contents',true);}else if(key==='end'){event.preventDefault();selectChapter(13,getPages(13).length-1);}else if(/^[1-9]$/.test(key)){event.preventDefault();selectChapter(Number(key));}
 });
