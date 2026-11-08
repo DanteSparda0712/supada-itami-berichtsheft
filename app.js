@@ -4,6 +4,7 @@ const $ = id => document.getElementById(id);
 const STORAGE_KEY = 'supada-itami-reports-v1';
 const REPORT_COUNT = reports.length;
 const LAST_CHAPTER = reports[REPORT_COUNT - 1].id;
+const BOOK_OPENING_MS = 620;
 const state = { phase: 'cover', chapter: 0, view: 'reader', search: '', category: 'Alle', custom: {}, motionOff: false };
 const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const leaf = '<svg class="leaf" aria-hidden="true"><use href="assets/konoha-emblem.svg#leaf"/></svg>';
@@ -99,19 +100,20 @@ function setView(view, focus = false) {
 }
 function syncPhase() {
   const reading = state.phase === 'reader';
+  const opening = state.phase === 'opening';
   $('cover-view').hidden = reading;
   $('cover-view').inert = state.phase !== 'cover';
-  $('open-spread').hidden = !reading;
+  $('open-spread').hidden = !reading && !opening;
   $('open-spread').inert = !reading;
-  $('buch').classList.toggle('is-opening', state.phase === 'opening');
-  $('buch').setAttribute('aria-busy', String(state.phase === 'opening'));
+  $('open-spread').setAttribute('aria-hidden', String(!reading));
+  $('buch').classList.toggle('is-opening', opening);
+  $('buch').setAttribute('aria-busy', String(opening));
   $('open-book-cover').disabled = state.phase !== 'cover';
   $('open-book').disabled = state.phase !== 'cover';
 }
 function cancelOpening() {
   clearTimeout(openingTimer);
   $('buch').classList.remove('is-opening');
-  $('open-spread').classList.remove('reader-enter');
 }
 function finishOpening() {
   if (state.phase !== 'opening') return;
@@ -119,20 +121,21 @@ function finishOpening() {
   state.phase = 'reader';
   syncPhase();
   setView(state.view, true);
-  if (!state.motionOff) $('open-spread').classList.add('reader-enter');
   $('opening-status').textContent = 'Dein Konoha-Buch ist geöffnet.';
   writeRoute(state.view === 'contents' ? '#inhalt' : state.chapter ? `#bericht-${state.chapter}` : '#steckbrief');
-  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 function openBook() {
   if (state.phase !== 'cover') return;
   renderReader();
   setView('reader');
+  const animate = !state.motionOff && !motionPreference.matches;
+  // Return from a lower cover position while the book opens, without a final jump.
+  window.scrollTo({ top: 0, behavior: animate ? 'smooth' : 'instant' });
   state.phase = 'opening';
   syncPhase();
   $('opening-status').textContent = 'Dein Konoha-Buch wird geöffnet.';
-  if (state.motionOff || motionPreference.matches) finishOpening();
-  else openingTimer = setTimeout(finishOpening, 420);
+  if (!animate) finishOpening();
+  else openingTimer = setTimeout(finishOpening, BOOK_OPENING_MS + 140);
 }
 $('open-book-cover').addEventListener('animationend', event => { if (event.target === $('open-book-cover') && event.animationName === 'cover-open') finishOpening(); });
 function showReader(chapter, { route = true, focus = true, view = 'reader' } = {}) {
