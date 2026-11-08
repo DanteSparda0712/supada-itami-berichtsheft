@@ -107,5 +107,50 @@ const reports = [
     "title": "Neuer Rang: Chunin",
     "excerpt": "04.11.2026: Ein neues Kapitel beginnt. Seit diesem Tag trage ich den Rang Chunin.",
     "body": "Am 04.11.2026 habe ich den Rang „Chunin“ erreicht. Nach meinem bestätigten Genin-Rang vom 28.10.2026 ist das der nächste festgehaltene Meilenstein auf meinem Weg.\n\nTextvorschlag zu meinen Tätigkeiten: In der Zwischenzeit habe ich weiter an meinen Grundlagen trainiert, mich mit taktischen Entscheidungen beschäftigt und bei Teamaufgaben Verantwortung übernommen. Ich habe meine Übungen ausgewertet und gezielt an offenen Punkten gearbeitet.\n\nAls Chunin möchte ich meine Fähigkeiten weiter festigen und mit jeder Aufgabe dazulernen. Dieser Rang ist ein neuer Anfang — mein Ninja-Weg geht weiter."
+  },
+  {
+    "id": 14,
+    "date": "2026-11-08",
+    "category": "Information",
+    "title": "Die Polizei von Konoha kennenlernen",
+    "excerpt": "Mich umhören, Informationen sammeln und einen möglichen Aufgabenbereich kennenlernen.",
+    "body": "Heute habe ich, Supada Itami, mich über die Polizei von Konohagakure umgehört und mich allgemein informiert. Ich wollte einen ersten Überblick gewinnen und besser verstehen, welche Aufgaben und welche Verantwortung mit diesem Bereich verbunden sind. Für meinen weiteren Weg als Shinobi ist es mir wichtig, verschiedene Möglichkeiten kennenzulernen.\n\nBei meinen Erkundigungen habe ich mich mit der Frage beschäftigt, welche Eigenschaften für eine solche Tätigkeit hilfreich sind. Aufmerksamkeit, ein ruhiges Auftreten und ein verantwortungsvoller Umgang mit anderen Menschen sind Punkte, auf die ich auch bei meiner eigenen Entwicklung stärker achten möchte.\n\nDie Gespräche und Informationen haben mir neue Denkanstöße gegeben. Ich möchte mir Zeit nehmen, das Gehörte einzuordnen und offene Fragen zu sammeln. So kann ich mich gezielter weiter informieren und herausfinden, ob dieser Bereich zu meinen Interessen passt.",
+    "topic": "Orientierung / Polizei"
+  },
+  {
+    "id": 15,
+    "date": "2026-11-08",
+    "category": "Information",
+    "title": "Mehr über die Tätigkeit als Sensei erfahren",
+    "excerpt": "Die Rolle eines Lehrers kennenlernen und über die Begleitung von Schülern nachdenken.",
+    "body": "Heute habe ich mich auch über die Tätigkeit als Sensei informiert. Da ich selbst von meinem früheren Lehrer viel mitgenommen habe, interessiert mich, wie ich mein eigenes Wissen verständlich weitergeben kann. Ich habe mich deshalb umgehört und mich allgemein mit der Rolle eines Lehrers beschäftigt.\n\nDabei habe ich besonders darüber nachgedacht, dass gute Erklärungen zum jeweiligen Schüler passen müssen. Manche benötigen eine langsame Wiederholung, andere zunächst einen Überblick. Für mich gehören Geduld, klare Worte und die Bereitschaft zuzuhören zu einem hilfreichen Umgang miteinander.\n\nDie Informationen haben mich dazu angeregt, mein eigenes Verhalten beim Erklären bewusster zu betrachten. Ich möchte auf Fragen eingehen und bei den Grundlagen bleiben, die ich selbst sicher verstanden habe. Mein Ziel ist es, Schüler beim Lernen zu unterstützen und dabei auch meine eigenen Fähigkeiten weiterzuentwickeln.",
+    "topic": "Orientierung / Sensei"
+  },
+  {
+    "id": 16,
+    "date": "2026-11-08",
+    "category": "Information",
+    "title": "Mich über die Palastdivision informieren",
+    "excerpt": "Einen weiteren Bereich kennenlernen und Eindrücke für meinen eigenen Weg sammeln.",
+    "body": "Neben der Polizei und der Sensei-Tätigkeit habe ich mich heute über die Palastdivision umgehört. Ich wollte einen allgemeinen Eindruck von diesem Bereich bekommen und besser einordnen, welche Rolle er innerhalb des Dorfes spielt. Dazu habe ich Informationen gesammelt und mich mit den möglichen Aufgaben und Erwartungen beschäftigt.\n\nMir ist wichtig, verschiedene Bereiche kennenzulernen, bevor ich meinen weiteren Weg genauer plane. Bei der Palastdivision interessieren mich besonders die Zusammenarbeit, die Verlässlichkeit und der verantwortungsvolle Umgang mit übernommenen Aufgaben. Diese Punkte möchte ich bei weiteren Gesprächen besser verstehen.\n\nFür mich war der heutige Austausch ein weiterer Schritt zur Orientierung. Ich nehme daraus mit, dass ich Informationen aufmerksam sammeln und offene Fragen gezielt ansprechen möchte. Die Eindrücke zur Palastdivision ergänzen das, was ich heute über die anderen Bereiche erfahren habe.",
+    "topic": "Orientierung / Palastdivision"
+  },
+  {
+    "id": 17,
+    "date": "2026-11-08",
+    "category": "Training",
+    "title": "Neue Taijutsu-Schüler über meinen früheren Lehrer",
+    "excerpt": "Neue Schüler kennenlernen und ihnen einen ersten Einblick in Taijutsu geben.",
+    "body": "Über meinen früheren Lehrer bin ich heute mit einigen neuen Schülern in Kontakt gekommen. Ich habe sie allgemein über Taijutsu informiert und ihnen erklärt, worauf ich bei den Grundlagen besonders achte. Dabei wollte ich ihnen einen verständlichen Einstieg geben und Raum für ihre Fragen lassen.\n\nIch habe die Bedeutung einer stabilen Haltung, einer aufmerksamen Deckung und kontrollierter Bewegungen angesprochen. Mir war wichtig, die einzelnen Punkte ruhig zu erklären und die Schüler nicht mit zu vielen Informationen auf einmal zu überfordern. Sie sollen zunächst verstehen können, warum diese Grundlagen wichtig sind.\n\nDer Kontakt zu den neuen Schülern hat mich daran erinnert, wie hilfreich die Unterstützung meines eigenen Lehrers für mich war. Diese Erfahrung möchte ich in meinen Umgang mit ihnen einbringen. Ich möchte sie beim Einstieg unterstützen und ihre Fragen als Gelegenheit nutzen, auch meine eigenen Erklärungen zu verbessern.",
+    "topic": "Taijutsu / Neue Schüler"
+  },
+  {
+    "id": 18,
+    "date": "2026-11-08",
+    "category": "Training",
+    "title": "Taijutsu-Grundlagen verständlich weitergeben",
+    "excerpt": "Haltung, Beinarbeit und Deckung erklären und auf die Fragen der Schüler eingehen.",
+    "body": "Im Austausch mit den neuen Schülern habe ich mich heute damit beschäftigt, Taijutsu möglichst einfach und nachvollziehbar zu erklären. Ich habe die Grundlagen in einzelne Themen aufgeteilt: den sicheren Stand, die Beinarbeit, die Deckung und die Kontrolle der eigenen Bewegung. So wollte ich einen klaren Zusammenhang zwischen den einzelnen Punkten herstellen.\n\nBei meinen Erklärungen habe ich betont, dass saubere Bewegungen und ein bewusster Umgang mit dem eigenen Körper die Grundlage für weiteres Lernen bilden. Die Schüler sollen sich Zeit nehmen können, Fragen zu stellen und die Abläufe zu verstehen. Mir ist dabei ein ruhiger und respektvoller Umgang wichtig.\n\nFür mich selbst war das Weitergeben meines Wissens ebenfalls lehrreich. Ich musste überlegen, wie ich bekannte Dinge mit einfachen Worten beschreibe. In Zukunft möchte ich meine Erklärungen noch stärker an den jeweiligen Lernstand anpassen und die Schüler Schritt für Schritt bei ihren Grundlagen begleiten.",
+    "topic": "Taijutsu / Grundlagen vermitteln"
   }
 ];

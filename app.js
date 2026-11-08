@@ -2,6 +2,8 @@
 
 const $ = id => document.getElementById(id);
 const STORAGE_KEY = 'supada-itami-reports-v1';
+const REPORT_COUNT = reports.length;
+const LAST_CHAPTER = reports[REPORT_COUNT - 1].id;
 const state = { phase: 'cover', chapter: 0, view: 'reader', search: '', category: 'Alle', custom: {}, motionOff: false };
 const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const leaf = '<svg class="leaf" aria-hidden="true"><use href="assets/konoha-emblem.svg#leaf"/></svg>';
@@ -58,7 +60,7 @@ function renderContents() {
   $('chapter-list').innerHTML = visible.map(report => `<li><button class="chapter-item${isRank(report) ? ' rank-item' : ''}" type="button" data-chapter="${report.id}"${state.chapter === report.id ? ' aria-current="page"' : ''}><span class="chapter-index">${String(report.id).padStart(2, '0')}</span><span class="chapter-summary"><span class="chapter-title">${escapeHtml(report.title)}</span><span class="chapter-meta">${dateText(report.date)} · ${escapeHtml(report.category)}</span></span></button></li>`).join('');
   $('empty-state').hidden = visible.length > 0;
   $('chapter-list').hidden = visible.length === 0;
-  $('result-count').textContent = visible.length === 13 ? '13 Kapitel · Mein Weg als Shinobi' : `${visible.length} von 13 Kapiteln`;
+  $('result-count').textContent = visible.length === REPORT_COUNT ? `${REPORT_COUNT} Kapitel · Mein Weg als Shinobi` : `${visible.length} von ${REPORT_COUNT} Kapiteln`;
   if (state.chapter === 0) $('show-profile').setAttribute('aria-current', 'page');
   else $('show-profile').removeAttribute('aria-current');
 }
@@ -74,12 +76,12 @@ function renderReader() {
     $('reader-content').innerHTML = `<article class="chapter-content${isRank(report) ? ' rank-chapter' : ''}"><p class="reader-kicker">KAPITEL ${String(report.id).padStart(2, '0')} · ${escapeHtml(report.category.toUpperCase())}</p><h2 class="reader-title" id="reader-title">${escapeHtml(report.title)}</h2><div class="reader-date"><time datetime="${report.date}">${dateText(report.date)}</time><span>${escapeHtml(report.topic || report.category)}</span><span class="text-status">${state.custom[report.id] ? 'MEIN TEXT' : 'TEXTVORSCHLAG'}</span></div><div class="chapter-body">${paragraphs(report.body)}</div><div class="chapter-tail">${leaf}<button class="edit-chapter-link" type="button" data-edit="${report.id}">Dieses Kapitel bearbeiten ↗</button></div></article>`;
     $('running-chapter').textContent = 'SUPADA ITAMI · BERICHTSHEFT';
     $('running-date').textContent = `KAPITEL ${String(report.id).padStart(2, '0')}`;
-    $('reading-position').textContent = `KAPITEL ${report.id} VON 13`;
+    $('reading-position').textContent = `KAPITEL ${report.id} VON ${REPORT_COUNT}`;
     $('page-number').textContent = String(report.id + 1).padStart(2, '0');
   }
   $('reader-content').scrollTop = 0;
   $('previous-page').disabled = state.chapter === 0;
-  $('next-page').disabled = state.chapter === 13;
+  $('next-page').disabled = state.chapter === LAST_CHAPTER;
   $('next-page').setAttribute('aria-label', state.chapter === 0 ? 'Erstes Kapitel lesen' : 'Nächstes Kapitel');
 }
 
@@ -160,7 +162,7 @@ function handleRoute(focus = true) {
   const chapter = hash.match(/^#(?:bericht|monat)-(\d+)$/);
   if (chapter && getReport(chapter[1])) return showReader(Number(chapter[1]), { route: false, focus });
   if (['#inhalt', '#berichte'].includes(hash)) return showReader(state.chapter, { route: false, focus, view: 'contents' });
-  if (hash === '#ausblick') return showReader(13, { route: false, focus });
+  if (hash === '#ausblick') return showReader(LAST_CHAPTER, { route: false, focus });
   if (['#steckbrief', '#buch'].includes(hash)) return showReader(0, { route: false, focus });
   closeBook({ route: false, focus: false });
 }
@@ -191,7 +193,7 @@ $('reset-search').addEventListener('click', () => {
 function moveChapter(direction) {
   if (state.phase !== 'reader') return;
   const next = state.chapter + direction;
-  if (next >= 0 && next <= 13) showReader(next);
+  if (next === 0 || getReport(next)) showReader(next);
 }
 $('previous-page').addEventListener('click', () => moveChapter(-1));
 $('next-page').addEventListener('click', () => moveChapter(1));
@@ -247,7 +249,7 @@ $('edit-form').addEventListener('submit', event => {
 });
 
 function plainText() {
-  const heading = 'SUPADA ITAMI — DAS KONOHA-BUCH\n13 Kapitel · Zenkai DE\n\nFiktives Rollenspiel-Archiv. Nicht bearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.\n\n';
+  const heading = `SUPADA ITAMI — DAS KONOHA-BUCH\n${REPORT_COUNT} Kapitel · Zenkai DE\n\nFiktives Rollenspiel-Archiv. Nicht bearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.\n\n`;
   return heading + reports.map(original => { const report = getReport(original.id); return `KAPITEL ${String(report.id).padStart(2, '0')}\n${report.title}\n${dateText(report.date)} · ${report.category}\n${state.custom[report.id] ? 'Mein Text' : 'Textvorschlag'}\n\n${report.body}`; }).join('\n\n' + '—'.repeat(40) + '\n\n');
 }
 $('download').addEventListener('click', () => {
@@ -256,11 +258,14 @@ $('download').addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 function renderPrint() {
-  $('print-content').innerHTML = `<h1 class="print-title">Supada Itami</h1><p class="print-subtitle">Das Konoha-Buch · 13 Kapitel · Zenkai DE</p><p class="print-note">Fiktives Rollenspiel-Archiv. Nicht bearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.</p>` + reports.map(original => { const report = getReport(original.id); return `<article><p class="print-date">KAPITEL ${String(report.id).padStart(2, '0')} · ${escapeHtml(report.category)}</p><h2>${escapeHtml(report.title)}</h2><p class="print-date">${dateText(report.date)} · ${state.custom[report.id] ? 'Mein Text' : 'Textvorschlag'}</p>${paragraphs(report.body)}</article>`; }).join('');
+  $('print-content').innerHTML = `<h1 class="print-title">Supada Itami</h1><p class="print-subtitle">Das Konoha-Buch · ${REPORT_COUNT} Kapitel · Zenkai DE</p><p class="print-note">Fiktives Rollenspiel-Archiv. Nicht bearbeitete Tätigkeiten und weitere Daten sind Textvorschläge.</p>` + reports.map(original => { const report = getReport(original.id); return `<article><p class="print-date">KAPITEL ${String(report.id).padStart(2, '0')} · ${escapeHtml(report.category)}</p><h2>${escapeHtml(report.title)}</h2><p class="print-date">${dateText(report.date)} · ${state.custom[report.id] ? 'Mein Text' : 'Textvorschlag'}</p>${paragraphs(report.body)}</article>`; }).join('');
 }
 window.addEventListener('beforeprint', renderPrint);
 $('print').addEventListener('click', () => { renderPrint(); window.print(); });
 
+document.querySelectorAll('[data-report-count]').forEach(element => { element.textContent = String(REPORT_COUNT); });
+$('chapter-list').setAttribute('aria-label', `${REPORT_COUNT} Kapitel`);
+$('download').setAttribute('aria-label', `Alle ${REPORT_COUNT} Berichte als Text herunterladen`);
 renderContents();
 renderReader();
 handleRoute(false);

@@ -1,6 +1,6 @@
 # Supada Itami · Das Konoha-Buch
 
-Persönliches Naruto-Rollenspiel-Berichtsheft mit 13 vollständigen, bearbeitbaren Kapiteln. Statische Website auf GitHub Pages; keine Installation und kein Build notwendig.
+Persönliches Naruto-Rollenspiel-Berichtsheft mit 18 vollständigen, bearbeitbaren Kapiteln. Statische Website auf GitHub Pages; keine Installation und kein Build notwendig.
 
 ## Bedienung
 
@@ -9,17 +9,21 @@ Persönliches Naruto-Rollenspiel-Berichtsheft mit 13 vollständigen, bearbeitbar
 - „Zurück“ und „Weiter“ wechseln zwischen Kapiteln. Pfeiltasten funktionieren außerhalb von Eingabefeldern; Escape schließt das Buch.
 - Auf kleinen Bildschirmen zwischen „Inhalt“ und „Lesen“ wechseln.
 - Über „Bearbeiten“ eigene Texte, Titel und Daten eintragen. Änderungen liegen ausschließlich im Browser dieses Geräts, unter dem bestehenden Schlüssel `supada-itami-reports-v1`.
-- „Text“ lädt alle Berichte inklusive Änderungen herunter. „Drucken / PDF“ enthält alle 13 vollständigen Kapitel.
+- „Text“ lädt alle Berichte inklusive Änderungen herunter. „Drucken / PDF“ enthält alle 18 vollständigen Kapitel.
 - Die Animation kann am Desktop ausgeschaltet werden. Die Systemeinstellung für reduzierte Bewegung wird auf allen Geräten berücksichtigt.
 
 Die Rangtitel und Daten sind fest: **Neuer Rang: Bestätigter Genin · 28.10.2026** und **Neuer Rang: Chunin · 04.11.2026**. Ihre Berichtstexte können bearbeitet werden. Andere Tätigkeiten und weitere Daten sind fiktive, bearbeitbare Textvorschläge. Die vier ursprünglichen ausführlichen Berichte sind unverändert in `reports.js` enthalten.
+
+## Neue Berichte vom 08.11.2026
+
+Die Kapitel 14 bis 18 ergänzen die Erkundigungen zur Polizei, zur Sensei-Tätigkeit und zur Palastdivision sowie den Kontakt zu neuen Schülern über den früheren Lehrer und die Vermittlung von Taijutsu-Grundlagen. Alle fünf Einträge beziehen sich auf denselben Tag. Die bisherigen 13 Berichte bleiben unverändert.
 
 ## Aufbau
 
 - `index.html`: Einband, Buch, Editor und zugängliche Bedienelemente.
 - `style.css`: responsives Layout, dezente Einbandanimation und Druckansicht.
 - `app.js`: einfache Zustände für Einband, Öffnen und Lesen; Kapitelwahl, lokale Bearbeitung und Export.
-- `reports.js`: alle 13 Originaleinträge.
+- `reports.js`: alle 18 Berichte.
 - `assets/supada-itami.png`: Charakterbild von Supada Itami.
 - `assets/konoha-emblem.svg`: Konoha-Blattsymbol als skalierbare Vektorgrafik.
 
