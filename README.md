@@ -24,7 +24,7 @@ Die Kapitel 14 bis 18 ergänzen die Erkundigungen zur Polizei, zur Sensei-Tätig
 - `style.css`: responsives Layout, dezente Einbandanimation und Druckansicht.
 - `app.js`: einfache Zustände für Einband, Öffnen und Lesen; Kapitelwahl, lokale Bearbeitung und Export.
 - `reports.js`: alle 18 Berichte.
-- `assets/supada-itami.png`: Charakterbild von Supada Itami.
+- `assets/supada-itami-red.webp`: freigestelltes Charakterbild von Supada Itami mit roten Haaren.
 - `assets/konoha-emblem.svg`: Konoha-Blattsymbol als skalierbare Vektorgrafik.
 
 Direktlinks wie `#start`, `#inhalt`, `#steckbrief`, `#bericht-13` und bestehende `#monat-13`-Links werden unterstützt. Browser-Zurück und -Vorwärts stellen die jeweilige Ansicht wieder her. Schriften und Bilder werden lokal ausgeliefert, ohne externe Schriftanfragen.
