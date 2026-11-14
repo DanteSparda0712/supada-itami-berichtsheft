@@ -152,5 +152,59 @@ const reports = [
     "excerpt": "Haltung, Beinarbeit und Deckung erklären und auf die Fragen der Schüler eingehen.",
     "body": "Im Austausch mit den neuen Schülern habe ich mich heute damit beschäftigt, Taijutsu möglichst einfach und nachvollziehbar zu erklären. Ich habe die Grundlagen in einzelne Themen aufgeteilt: den sicheren Stand, die Beinarbeit, die Deckung und die Kontrolle der eigenen Bewegung. So wollte ich einen klaren Zusammenhang zwischen den einzelnen Punkten herstellen.\n\nBei meinen Erklärungen habe ich betont, dass saubere Bewegungen und ein bewusster Umgang mit dem eigenen Körper die Grundlage für weiteres Lernen bilden. Die Schüler sollen sich Zeit nehmen können, Fragen zu stellen und die Abläufe zu verstehen. Mir ist dabei ein ruhiger und respektvoller Umgang wichtig.\n\nFür mich selbst war das Weitergeben meines Wissens ebenfalls lehrreich. Ich musste überlegen, wie ich bekannte Dinge mit einfachen Worten beschreibe. In Zukunft möchte ich meine Erklärungen noch stärker an den jeweiligen Lernstand anpassen und die Schüler Schritt für Schritt bei ihren Grundlagen begleiten.",
     "topic": "Taijutsu / Grundlagen vermitteln"
+  },
+  {
+    "id": 19,
+    "date": "2026-11-09",
+    "category": "Training",
+    "title": "Taijutsu mit den neuen Schülern vertiefen",
+    "excerpt": "Die Grundlagen wiederholen, verständlich erklären und auf den Lernstand der Schüler eingehen.",
+    "topic": "Taijutsu / Schülertraining",
+    "body": "Ich, Supada Itami, habe heute die Taijutsu-Grundlagen mit den neuen Schülern weiter vertieft. Nach unserem ersten Austausch wollte ich die wichtigsten Punkte noch einmal verständlich aufgreifen: einen sicheren Stand, eine aufmerksame Deckung und kontrollierte Bewegungen.\n\nIch habe die Abläufe in kleine Schritte aufgeteilt und bei meinen Erklärungen darauf geachtet, dass die Schüler Fragen stellen konnten. Besonders wichtig war mir, dass sie den Zusammenhang zwischen Haltung und Beinarbeit verstehen. Eine Bewegung sollte zuerst nachvollziehbar sein, bevor das Tempo gesteigert wird.\n\nDabei habe ich auch meine eigene Ausführung bewusster betrachtet. Wenn ich etwas erklären möchte, muss ich selbst darauf achten, sauber und ruhig zu arbeiten. Für die nächsten Einheiten nehme ich mir vor, meine Hinweise noch genauer an den jeweiligen Lernstand anzupassen und Fortschritte Schritt für Schritt festzuhalten."
+  },
+  {
+    "id": 20,
+    "date": "2026-11-10",
+    "category": "Training",
+    "title": "Raiton mit Ruhe und Kontrolle trainieren",
+    "excerpt": "Die Konzentration festigen und bewusster mit dem eigenen Chakra umgehen.",
+    "topic": "Training / Raiton",
+    "body": "Heute habe ich mich auf mein Raiton-Training konzentriert. Mein Schwerpunkt lag darauf, ruhig zu bleiben und den Einsatz meines Chakras bewusster zu steuern. Ich wollte bekannte Abläufe festigen und dabei auf eine saubere Vorbereitung achten.\n\nIch habe einzelne kurze Durchgänge wiederholt und mir zwischen den Versuchen Zeit genommen, meine Konzentration neu zu sammeln. Dabei habe ich besonders auf meine Atmung, meine Haltung und die Einteilung meiner Energie geachtet. Wenn ich unruhig wurde, habe ich das Tempo herausgenommen und mich wieder auf die Grundlagen konzentriert.\n\nAus der Einheit nehme ich mit, dass sich Fortschritt auch an kleinen Verbesserungen zeigt. Für mich zählt, meine Fähigkeiten verlässlich einzusetzen und die eigenen Grenzen aufmerksam wahrzunehmen. Ich möchte mein Raiton weiterhin regelmäßig üben und meine Erfahrungen so festhalten, dass ich beim nächsten Training gezielt daran anknüpfen kann."
+  },
+  {
+    "id": 21,
+    "date": "2026-11-11",
+    "category": "Training",
+    "title": "Bewusst mit meinem Daiton umgehen",
+    "excerpt": "Mich mit meinem Kekkei Genkai beschäftigen und Konzentration sowie Selbstkontrolle festigen.",
+    "topic": "Training / Daiton",
+    "body": "Ich, Supada Itami, habe mich heute bewusst mit meinem Kekkei Genkai Daiton auseinandergesetzt. Es gehört zu meinem Erbe. Gleichzeitig möchte ich meine Entwicklung durch eigenes Lernen und einen verantwortungsvollen Umgang mit meinen Fähigkeiten gestalten.\n\nIm Mittelpunkt standen für mich Konzentration, die Einteilung meines Chakras und eine ruhige Vorbereitung. Ich habe mir Zeit genommen, bekannte Abläufe bewusst nachzuvollziehen und auf meine eigene Aufmerksamkeit zu achten. Dabei wollte ich besser erkennen, wann ich konzentriert arbeite und wann ich eine Pause brauche.\n\nDie Beschäftigung mit meinem Daiton hat mich daran erinnert, geduldig zu bleiben. Ich möchte meine Fähigkeiten Schritt für Schritt besser verstehen und meine Erfahrungen ehrlich einordnen. Für meinen weiteren Weg nehme ich mir vor, regelmäßig an meinen Grundlagen zu arbeiten und mein Erbe mit Disziplin und Selbstkontrolle zu verbinden."
+  },
+  {
+    "id": 22,
+    "date": "2026-11-12",
+    "category": "Information",
+    "title": "Meinen weiteren Weg im Dorf einordnen",
+    "excerpt": "Informationen zur Polizei, zur Sensei-Tätigkeit und zur Palastdivision weiter ordnen.",
+    "topic": "Orientierung / Aufgaben im Dorf",
+    "body": "Heute habe ich meine bisherigen Erkundigungen zur Polizei, zur Sensei-Tätigkeit und zur Palastdivision wieder aufgegriffen. Ich habe meine Eindrücke geordnet und mich weiter umgehört, um meinen möglichen Weg innerhalb des Dorfes besser einordnen zu können.\n\nDabei habe ich überlegt, welche Aufgaben mich besonders interessieren und welche Fragen noch offen sind. Für mich spielen Zusammenarbeit, Verlässlichkeit und der Umgang mit Verantwortung eine wichtige Rolle. Auch die Frage, wie ich mein Wissen verständlich an Schüler weitergeben kann, möchte ich weiter verfolgen.\n\nDie gesammelten Informationen helfen mir, meine nächsten Schritte bewusster zu planen. Ich möchte verschiedene Eindrücke miteinander vergleichen und bei Unklarheiten gezielt nachfragen. Mein Ziel ist es, einen Bereich zu finden, in dem ich mich sinnvoll einbringen und gleichzeitig weiter dazulernen kann."
+  },
+  {
+    "id": 23,
+    "date": "2026-11-13",
+    "category": "Training",
+    "title": "Mit Verantwortung auf den nächsten Schritt zugehen",
+    "excerpt": "Erfahrungen auswerten, Schüler unterstützen und die eigenen Grundlagen überprüfen.",
+    "topic": "Training / Verantwortung und Rückblick",
+    "body": "Ich, Supada Itami, habe heute auf meine letzten Trainingseinheiten und die Arbeit mit den Schülern zurückgeblickt. Ich wollte festhalten, welche Erklärungen hilfreich waren und an welchen Stellen ich selbst noch genauer auf meine Ausführung achten muss.\n\nBei der Wiederholung der Taijutsu-Grundlagen habe ich besonders auf Haltung, Beinarbeit und eine ruhige Herangehensweise geachtet. Im Umgang mit den Schülern war mir wichtig, aufmerksam zuzuhören und verständliche Hinweise zu geben. Meine Erfahrungen als Schüler helfen mir dabei, geduldig zu bleiben und Fragen ernst zu nehmen.\n\nFür mich bedeutet Verantwortung, die eigenen Aufgaben verlässlich anzugehen und zugleich offen für Rückmeldungen zu sein. Ich möchte meine Fähigkeiten weiter festigen, meine Grenzen kennen und andere beim Lernen unterstützen. Dieser Rückblick hat mir geholfen, meine Ziele für die nächsten Tage klarer zu formulieren."
+  },
+  {
+    "id": 24,
+    "date": "2026-11-14",
+    "category": "Rangaufstieg",
+    "title": "Neuer Rang: Konin",
+    "excerpt": "14.11.2026: Heute bin ich zum Konin aufgestiegen. Ein neuer Meilenstein auf meinem Shinobi-Weg.",
+    "topic": "Rangaufstieg / Konin",
+    "body": "Am 14.11.2026 wurde ich, Supada Itami, zum Konin befördert. Nach meinem bestätigten Genin-Rang vom 28.10.2026 und meinem Chunin-Rang vom 04.11.2026 ist dies ein weiterer fester Meilenstein in meinem Berichtsheft.\n\nIn den zurückliegenden Tagen habe ich meine Taijutsu-Grundlagen wiederholt, neue Schüler unterstützt und mich weiter mit meinem Raiton sowie meinem Kekkei Genkai Daiton beschäftigt. Außerdem habe ich Informationen über verschiedene Aufgabenbereiche im Dorf gesammelt und über meinen weiteren Weg nachgedacht.\n\nMit dem neuen Rang verbinde ich den Anspruch, zuverlässig zu handeln und Verantwortung bewusst zu übernehmen. Ich möchte meine Erfahrungen nutzen, aufmerksam mit anderen zusammenarbeiten und mein Wissen verständlich weitergeben. Dabei bleibt es mir wichtig, selbst dazuzulernen und an meinen Grundlagen festzuhalten.\n\nSeit heute trage ich den Rang Konin. Für mich beginnt damit ein neues Kapitel: Ich möchte meinen eigenen Weg weitergehen und meine Entwicklung auch künftig in diesem Buch dokumentieren."
   }
 ];
