@@ -1,40 +1,45 @@
 # Supada Itami · Das Konoha-Buch
 
-Persönliches Naruto-Rollenspiel-Berichtsheft mit 24 vollständigen, bearbeitbaren Kapiteln. Statische Website auf GitHub Pages; keine Installation und kein Build notwendig.
+Persönliche Naruto-Rollenspiel-Chronik mit 24 Berichten, gegliedert nach Spielmonaten. Statische Website auf GitHub Pages, ohne Build.
+
+## Zeitrechnung
+
+**Ein realer Servertag entspricht einem Spielmonat.** Der vom Nutzer angegebene Stand am 15.11.2026 ist Servertag 22 und damit Spielmonat 22. Bei inklusiver Zählung ergibt sich der 25.10.2026 als erster Servertag. Diese Zuordnung steht in `serverTimeline` in `reports.js`.
+
+Die ersten beiden früheren Datierungsvorschläge wurden auf den ersten Servertag gelegt. Alle 24 Berichtstexte, Titel und IDs bleiben erhalten. Mehrere Berichte vom selben realen Datum stehen zusammen in einem Spielmonat. Monate ohne Bericht werden als solche angezeigt; es werden keine Tätigkeiten ergänzt. Die Spielzeit ist die seit dem Beitritt vergangene Zeit, keine Angabe zum Alter des Charakters.
+
+Nach dem 15.11.2026 wächst die Monatszählung beim Laden mit dem realen Datum in Europe/Berlin weiter. Ein früher eingestelltes Geräte-Datum lässt den belegten Stand nicht zurückfallen.
+
+| Rangaufstieg | Reales Datum | Spielmonat |
+| --- | --- | --- |
+| Bestätigter Genin | 28.10.2026 | 4 |
+| Chunin | 04.11.2026 | 11 |
+| Konin | 14.11.2026 | 21 |
 
 ## Bedienung
 
-- Den grünen Einband oder „Mein Buch öffnen“ anklicken. Eine kurze, fest dimensionierte Einbandanimation führt zur Leseansicht.
-- Im Inhaltsverzeichnis ein Kapitel auswählen, suchen oder nach Thema filtern. Jedes Kapitel wird vollständig angezeigt und kann vertikal gescrollt werden.
-- „Zurück“ und „Weiter“ wechseln zwischen Kapiteln. Pfeiltasten funktionieren außerhalb von Eingabefeldern; Escape schließt das Buch.
-- Auf kleinen Bildschirmen zwischen „Inhalt“ und „Lesen“ wechseln.
-- Über „Bearbeiten“ eigene Texte, Titel und Daten eintragen. Änderungen liegen ausschließlich im Browser dieses Geräts, unter dem bestehenden Schlüssel `supada-itami-reports-v1`.
-- „Text“ lädt alle Berichte inklusive Änderungen herunter. „Drucken / PDF“ enthält alle 24 vollständigen Kapitel.
-- Die Animation kann am Desktop ausgeschaltet werden. Die Systemeinstellung für reduzierte Bewegung wird auf allen Geräten berücksichtigt.
+- Den Einband oder „Mein Buch öffnen“ anklicken. Die flüssige Überblendung respektiert reduzierte Bewegung.
+- In der Monatsübersicht einen Spielmonat auswählen, nach Begriffen suchen oder nach Thema filtern. Jeder Monatsabschnitt enthält alle zugehörigen Berichte.
+- „Zurück“ und „Weiter“ sowie die Pfeiltasten wechseln zwischen Spielmonaten; Escape schließt das Buch.
+- Auf dem Handy zwischen „Monate“ und „Lesen“ wechseln.
+- „Bearbeiten“ ändert einzelne Berichte. Das reale Datum bestimmt ihren Spielmonat. Rangtitel und Rangdaten bleiben fest.
+- Vorhandene Änderungen bleiben unter `supada-itami-reports-v1` erhalten. Frühere Datierungsvorschläge außerhalb der Serverzeit werden für die Zuordnung auf deren Grenzen begrenzt; gespeicherte Texte werden nicht überschrieben.
+- „Text“ und „Drucken / PDF“ exportieren alle Spielmonate und alle 24 Berichte mit der Zeitregel und den realen Daten.
 
-Die Rangtitel und Daten sind fest: **Neuer Rang: Bestätigter Genin · 28.10.2026**, **Neuer Rang: Chunin · 04.11.2026** und **Neuer Rang: Konin · 14.11.2026**. Ihre Berichtstexte können bearbeitet werden. Andere Tätigkeiten und weitere Daten sind fiktive, bearbeitbare Textvorschläge. Die vier ursprünglichen ausführlichen Berichte sind unverändert in `reports.js` enthalten.
+Berichte sind fiktive, bearbeitbare Textvorschläge für das Rollenspiel. Charakterbild, Daiton, Konin-Rang und Nindō „Der Tod ist keine Schande.“ bleiben erhalten.
 
-## Neue Berichte vom 08.11.2026
+## Aufbau und Direktlinks
 
-Die Kapitel 14 bis 18 ergänzen die Erkundigungen zur Polizei, zur Sensei-Tätigkeit und zur Palastdivision sowie den Kontakt zu neuen Schülern über den früheren Lehrer und die Vermittlung von Taijutsu-Grundlagen. Alle fünf Einträge beziehen sich auf denselben Tag. Die bisherigen 13 Berichte bleiben unverändert.
+- `index.html`: Einband, Monatsübersicht, Buch und Editor.
+- `style.css`: responsives Layout, Animation und Druckansicht.
+- `app.js`: Zeitzuordnung, Monatsnavigation, Suche, lokale Bearbeitung und Export.
+- `reports.js`: Zeitbezug und alle Berichte mit stabilen IDs.
+- `assets/supada-itami-red.webp`: freigestelltes Charakterbild mit roten Haaren.
 
-## Tagesberichte vom 09. bis 14.11.2026
-
-Die Kapitel 19 bis 24 setzen das Buch mit einem Eintrag pro Tag fort: Taijutsu mit den Schülern, Raiton-Training, der bewusste Umgang mit Daiton, weitere Orientierung im Dorf und ein Rückblick auf die eigene Verantwortung. Kapitel 24 hält den vom Nutzer angegebenen Aufstieg zum **Konin am 14.11.2026** fest. Konin ist auch auf Einband und Steckbrief der aktuelle Rang; alle drei Rangaufstiege bleiben in der persönlichen Zeitleiste erhalten. Die bisherigen 18 Berichte sind unverändert.
-
-## Aufbau
-
-- `index.html`: Einband, Buch, Editor und zugängliche Bedienelemente.
-- `style.css`: responsives Layout, dezente Einbandanimation und Druckansicht.
-- `app.js`: einfache Zustände für Einband, Öffnen und Lesen; Kapitelwahl, lokale Bearbeitung und Export.
-- `reports.js`: alle 24 Berichte.
-- `assets/supada-itami-red.webp`: freigestelltes Charakterbild von Supada Itami mit roten Haaren.
-- `assets/konoha-emblem.svg`: Konoha-Blattsymbol als skalierbare Vektorgrafik.
-
-Direktlinks wie `#start`, `#inhalt`, `#steckbrief`, `#bericht-13` und bestehende `#monat-13`-Links werden unterstützt. Browser-Zurück und -Vorwärts stellen die jeweilige Ansicht wieder her. Schriften und Bilder werden lokal ausgeliefert, ohne externe Schriftanfragen.
+`#monat-9` führt jetzt tatsächlich zum neunten Spielmonat. Bestehende Links wie `#bericht-24` öffnen weiterhin den passenden Bericht innerhalb seines Spielmonats. `#start`, `#steckbrief` und `#inhalt` bleiben erhalten. Browser-Zurück und -Vorwärts werden unterstützt.
 
 ## Quellen und Lizenzen
 
-Die Geometrie des Konoha-Blattsymbols stammt aus [Konohagakure.svg von Shisma auf Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Konohagakure.svg), als einfache geometrische Form gemeinfrei (PD-shape). Die Pfade wurden unverändert übernommen; Farben und Einbettung wurden angepasst. Es handelt sich um ein inoffizielles Fanprojekt.
+Die Geometrie des Konoha-Blattsymbols stammt aus [Konohagakure.svg von Shisma auf Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Konohagakure.svg), gemeinfrei als einfache geometrische Form (PD-shape). Farben und Einbettung wurden angepasst. Inoffizielles Fanprojekt.
 
-Cormorant Garamond und DM Sans werden unter der SIL Open Font License ausgeliefert. Lizenztexte liegen in `assets/fonts/`.
+Cormorant Garamond und DM Sans werden unter der SIL Open Font License ausgeliefert; Lizenztexte liegen in `assets/fonts/`.

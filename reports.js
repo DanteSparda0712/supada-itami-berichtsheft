@@ -1,8 +1,13 @@
 'use strict';
+const serverTimeline = Object.freeze({
+  "startDate": "2026-10-25",
+  "asOfDate": "2026-11-15",
+  "serverDaysAsOf": 22
+});
 const reports = [
   {
     "id": 1,
-    "date": "2026-10-23",
+    "date": "2026-10-25",
     "category": "Training",
     "title": "Taijutsu und Beinarbeit",
     "excerpt": "Grundhaltung festigen, die Deckung schließen und sicher ausweichen.",
@@ -11,7 +16,7 @@ const reports = [
   },
   {
     "id": 2,
-    "date": "2026-10-24",
+    "date": "2026-10-25",
     "category": "Training",
     "title": "Raiton bewusst kontrollieren",
     "excerpt": "Kurze Anwendungen dosieren und den Chakra-Verbrauch beobachten.",
