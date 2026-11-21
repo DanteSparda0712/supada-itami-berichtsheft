@@ -38,7 +38,7 @@ Berichte sind fiktive, bearbeitbare Textvorschläge für das Rollenspiel. Charak
 - `style.css`: responsives Layout, Animation und Druckansicht.
 - `app.js`: Zeitzuordnung, Monatsnavigation, Suche, lokale Bearbeitung und Export.
 - `reports.js`: Zeitbezug und alle Berichte mit stabilen IDs.
-- `assets/supada-itami-red.webp`: freigestelltes Charakterbild mit roten Haaren.
+- `assets/supada-itami-white-20261121.webp`: freigestelltes Charakterbild mit weißen Haaren und Schulterschutz.
 
 `#monat-9` führt jetzt tatsächlich zum neunten Spielmonat. Bestehende Links wie `#bericht-24` öffnen weiterhin den passenden Bericht innerhalb seines Spielmonats. `#start`, `#steckbrief` und `#inhalt` bleiben erhalten. Browser-Zurück und -Vorwärts werden unterstützt.
 
