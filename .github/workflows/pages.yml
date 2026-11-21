@@ -28,7 +28,12 @@ jobs:
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
+          name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
           path: '.'
+      - name: Allow artifact metadata to become available
+        run: sleep 5
       - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v5
+        with:
+          artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
