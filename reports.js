@@ -1,8 +1,8 @@
 'use strict';
 const serverTimeline = Object.freeze({
   "startDate": "2026-10-25",
-  "asOfDate": "2026-11-15",
-  "serverDaysAsOf": 22
+  "asOfDate": "2026-11-21",
+  "serverDaysAsOf": 28
 });
 const reports = [
   {
@@ -211,5 +211,68 @@ const reports = [
     "excerpt": "14.11.2026: Heute bin ich zum Konin aufgestiegen. Ein neuer Meilenstein auf meinem Shinobi-Weg.",
     "topic": "Rangaufstieg / Konin",
     "body": "Am 14.11.2026 wurde ich, Supada Itami, zum Konin befördert. Nach meinem bestätigten Genin-Rang vom 28.10.2026 und meinem Chunin-Rang vom 04.11.2026 ist dies ein weiterer fester Meilenstein in meinem Berichtsheft.\n\nIn den zurückliegenden Tagen habe ich meine Taijutsu-Grundlagen wiederholt, neue Schüler unterstützt und mich weiter mit meinem Raiton sowie meinem Kekkei Genkai Daiton beschäftigt. Außerdem habe ich Informationen über verschiedene Aufgabenbereiche im Dorf gesammelt und über meinen weiteren Weg nachgedacht.\n\nMit dem neuen Rang verbinde ich den Anspruch, zuverlässig zu handeln und Verantwortung bewusst zu übernehmen. Ich möchte meine Erfahrungen nutzen, aufmerksam mit anderen zusammenarbeiten und mein Wissen verständlich weitergeben. Dabei bleibt es mir wichtig, selbst dazuzulernen und an meinen Grundlagen festzuhalten.\n\nSeit heute trage ich den Rang Konin. Für mich beginnt damit ein neues Kapitel: Ich möchte meinen eigenen Weg weitergehen und meine Entwicklung auch künftig in diesem Buch dokumentieren."
+  },
+  {
+    "id": 25,
+    "date": "2026-11-15",
+    "category": "Training",
+    "title": "Meinen Weg als Konin bewusst fortsetzen",
+    "excerpt": "Nach dem Rangaufstieg die Grundlagen weiter festigen und die nächsten Ziele ordnen.",
+    "topic": "Training / Verantwortung als Konin",
+    "body": "Ich, Supada Itami, habe heute meine nächsten Schritte als Konin geordnet. Der neue Rang ist für mich ein Anlass, weiterhin bewusst an meinen Grundlagen zu arbeiten und meine bisherigen Erfahrungen ernst zu nehmen.\n\nIch habe mich mit einer stabilen Haltung, kontrollierten Bewegungen und einer aufmerksamen Deckung beschäftigt. Dabei wollte ich bekannte Abläufe ruhig wiederholen und prüfen, an welchen Stellen ich noch genauer auf meine Ausführung achten muss. Auch meine Erfahrungen beim Erklären der Taijutsu-Grundlagen habe ich in diesen Rückblick einbezogen.\n\nFür meinen weiteren Weg nehme ich mir vor, zuverlässig zu handeln und offen für Rückmeldungen zu bleiben. Ich möchte meine Fähigkeiten festigen, andere beim Lernen unterstützen und meine Fortschritte weiterhin in diesem Buch dokumentieren."
+  },
+  {
+    "id": 26,
+    "date": "2026-11-16",
+    "category": "Training",
+    "title": "Taijutsu mit den Schülern weiter festigen",
+    "excerpt": "Beinarbeit und Deckung verständlich erklären und die eigenen Grundlagen überprüfen.",
+    "topic": "Taijutsu / Schülertraining",
+    "body": "Heute habe ich die Taijutsu-Grundlagen mit den Schülern weiter aufgegriffen. Im Mittelpunkt standen der sichere Stand, die Beinarbeit und die Rückkehr in die Deckung nach einer Bewegung.\n\nIch habe die einzelnen Punkte ruhig erklärt und darauf geachtet, dass die Abläufe nachvollziehbar bleiben. Bei Fragen wollte ich zunächst eine verständliche Grundlage schaffen, bevor weitere Bewegungen hinzukommen. Gleichzeitig habe ich meine eigene Ausführung überprüft, denn beim Vormachen muss ich selbst besonders sauber arbeiten.\n\nDie Beschäftigung mit den Schülern erinnert mich daran, wie wichtig Geduld und klare Hinweise sind. Für die nächsten Einheiten möchte ich die Grundlagen weiterhin in kleinen Schritten vermitteln und aufmerksam darauf eingehen, wo noch Unsicherheiten bestehen."
+  },
+  {
+    "id": 27,
+    "date": "2026-11-17",
+    "category": "Training",
+    "title": "Raiton und Konzentration bewusst trainieren",
+    "excerpt": "Mit Ruhe arbeiten, das eigene Chakra einteilen und bekannte Abläufe wiederholen.",
+    "topic": "Training / Raiton und Konzentration",
+    "body": "Ich, Supada Itami, habe heute an meiner Konzentration und an den Grundlagen meines Raiton gearbeitet. Dabei wollte ich besonders darauf achten, meine Energie bewusst einzuteilen und ruhig an die einzelnen Abläufe heranzugehen.\n\nIch habe kurze Durchgänge wiederholt und mir dazwischen Zeit genommen, meine Aufmerksamkeit neu zu sammeln. Mein Schwerpunkt lag auf einer sauberen Vorbereitung, einer kontrollierten Ausführung und dem Erkennen eigener Unruhe. Wenn meine Konzentration nachließ, habe ich das Tempo herausgenommen und mich erneut auf die Grundlagen besonnen.\n\nAus dieser Beschäftigung nehme ich mit, dass verlässliche Fortschritte Geduld benötigen. Ich möchte meine Fähigkeiten regelmäßig üben und meine Beobachtungen festhalten, damit ich beim nächsten Training gezielter daran anknüpfen kann."
+  },
+  {
+    "id": 28,
+    "date": "2026-11-18",
+    "category": "Information",
+    "title": "Mich mit der Verantwortung im Personenschutz beschäftigen",
+    "excerpt": "Die Schutzaufgabe innerhalb der Diplomatie-Division besser einordnen.",
+    "topic": "Diplomatie-Division / Orientierung im Personenschutz",
+    "body": "Heute habe ich mich allgemein mit dem Personenschutz als Untereinheit der Diplomatie-Division beschäftigt. Mich interessiert, wie ich meine Fähigkeiten verantwortungsvoll einsetzen kann, wenn der Schutz anderer Menschen im Mittelpunkt einer Aufgabe steht.\n\nDabei habe ich besonders über Aufmerksamkeit, Verlässlichkeit und Zusammenarbeit nachgedacht. Für mich ist wichtig, Absprachen ernst zu nehmen, Rückmeldungen verständlich zu geben und die gemeinsame Aufgabe im Blick zu behalten. Ich möchte die Erwartungen an diesen Bereich besser verstehen und offene Fragen gezielt ansprechen.\n\nDiese Orientierung hilft mir, meinen weiteren Weg bewusster zu gestalten. Ich möchte meine Grundlagen weiter festigen und mich mit einer ruhigen, verantwortungsvollen Haltung auf kommende Aufgaben und Prüfungen vorbereiten."
+  },
+  {
+    "id": 29,
+    "date": "2026-11-19",
+    "category": "Training",
+    "title": "Mich auf die Tests im Personenschutz vorbereiten",
+    "excerpt": "Grundlagen wiederholen und mit einer klaren Haltung an die bevorstehenden Prüfungen gehen.",
+    "topic": "Personenschutz / Vorbereitung",
+    "body": "Ich, Supada Itami, habe mich heute auf die anstehenden Tests für die Personenschutz-Untereinheit der Diplomatie-Division vorbereitet. Ich wollte meine bisherigen Erfahrungen sammeln und mit einer klaren Haltung an die Aufgaben herangehen.\n\nDazu habe ich meine Grundlagen noch einmal bewusst betrachtet: eine kontrollierte Bewegung, eine aufmerksame Deckung und die Fähigkeit, auch bei Anspannung ruhig zu bleiben. Ebenso wichtig sind für mich verständliche Absprachen und die Bereitschaft, im Team aufeinander zu achten.\n\nIch möchte in den Tests zeigen, dass ich meine Fähigkeiten verlässlich einsetzen und Verantwortung für eine gemeinsame Aufgabe übernehmen kann. Für mich gehört dazu, aufmerksam zuzuhören, eigene Fehler wahrzunehmen und aus den anschließenden Rückmeldungen zu lernen."
+  },
+  {
+    "id": 30,
+    "date": "2026-11-20",
+    "category": "Mission",
+    "title": "Schutzmission für die Diplomatenführung",
+    "excerpt": "Im Rahmen der Tests für den Personenschutz die Führung der Diplomaten beschützen.",
+    "topic": "Diplomatie-Division / Personenschutz",
+    "body": "Am 20.11.2026 waren wir im Rahmen der Tests für den Personenschutz, einer Untereinheit der Diplomatie-Division, auf einer Mission. Unsere Aufgabe war es, die Führung der Diplomaten zu beschützen. Gemeinsam mit dem Team habe ich diese Schutzaufgabe übernommen.\n\nWährend der Mission habe ich mich darauf konzentriert, aufmerksam zu bleiben und die Absprachen innerhalb des Teams zu beachten. Für mich stand der Schutzauftrag im Mittelpunkt. Ich wollte zuverlässig mitarbeiten und die gemeinsame Verantwortung ernst nehmen.\n\nDie Mission hat mir verdeutlicht, wie wichtig Ruhe, Verlässlichkeit und ein aufmerksamer Umgang miteinander bei einer Schutzaufgabe sind. Wir haben die Diplomatenführung beschützt, und ich konnte dabei Erfahrungen für die Tests der Personenschutz-Untereinheit sammeln. Diese Eindrücke nehme ich für meinen weiteren Weg mit."
+  },
+  {
+    "id": 31,
+    "date": "2026-11-21",
+    "category": "Prüfung",
+    "title": "Kampftest mit meinem Bruder Hogiki bestanden",
+    "excerpt": "21.11.2026: Gemeinsam mit meinem Bruder Hogiki den Kampftest für den Personenschutz bestanden.",
+    "topic": "Personenschutz / Kampftest",
+    "body": "Am 21.11.2026 habe ich gemeinsam mit meinem Bruder Hogiki den Kampftest für die Personenschutz-Untereinheit der Diplomatie-Division bestanden. Nach der Schutzmission für die Diplomatenführung vom Vortag ist dies ein weiterer wichtiger Schritt in meinen Tests für diesen Bereich.\n\nIm Kampftest war mir wichtig, konzentriert zu bleiben und meine Grundlagen kontrolliert einzusetzen. Bei der Zusammenarbeit mit Hogiki habe ich besonders auf klare Absprachen und gegenseitige Aufmerksamkeit geachtet. Ich wollte meine bisherigen Erfahrungen sinnvoll einbringen und auch bei Anspannung ruhig an die Aufgabe herangehen.\n\nDass ich den Kampftest zusammen mit meinem Bruder bestanden habe, bedeutet mir viel. Ich nehme daraus Motivation mit, weiter an meinen Fähigkeiten zu arbeiten und Verantwortung bewusst zu übernehmen.\n\nErgebnis: Kampftest gemeinsam mit meinem Bruder Hogiki bestanden."
   }
 ];
