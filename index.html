@@ -13,7 +13,7 @@
   <link rel="preload" href="assets/fonts/dm-sans-regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" as="image" href="assets/supada-itami-white-20261121.webp">
   <link rel="stylesheet" href="style.css?v=20261115-game-months">
-  <script src="reports.js?v=20261121-personenschutz" defer></script>
+  <script src="reports.js?v=20261124-krieg-reisdorf" defer></script>
   <script src="app.js?v=20261121-white-portrait" defer></script>
 </head>
 <body>
@@ -22,7 +22,7 @@
     <a class="brand" href="#start" aria-label="Konoha-Archiv, zur Startseite"><svg class="leaf" aria-hidden="true"><use href="assets/konoha-emblem.svg#leaf"/></svg><span>Konoha-Archiv<small>SUPADA ITAMI</small></span></a>
     <nav class="top-actions" aria-label="Buch bedienen">
       <button id="motion-toggle" class="quiet-button motion-control" type="button" aria-pressed="false"><span class="motion-dot" aria-hidden="true"></span><span id="motion-label">Animation an</span></button>
-      <button id="show-contents" class="quiet-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h6c2 0 3 1 3 2v13c0-2-1-3-3-3H3V5Zm18 0h-6c-2 0-3 1-3 2v13c0-2 1-3 3-3h6V5Z"/></svg>Monate <span class="count-badge" data-month-count>28</span></button>
+      <button id="show-contents" class="quiet-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h6c2 0 3 1 3 2v13c0-2-1-3-3-3H3V5Zm18 0h-6c-2 0-3 1-3 2v13c0-2 1-3 3-3h6V5Z"/></svg>Monate <span class="count-badge" data-month-count>31</span></button>
       <button id="open-editor" class="quiet-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 15 11-11 4 4L9 19H5v-4ZM14 6l4 4M4 22h16"/></svg><span>Bearbeiten</span></button>
     </nav>
   </header>
@@ -34,7 +34,7 @@
         <h1 id="cover-heading">Mein Weg.<br>Meine Geschichte<span>.</span></h1>
         <p class="intro-copy">Training, Missionen und die Momente, die bleiben. Das persönliche Berichtsheft von <strong>Supada Itami.</strong></p>
         <button id="open-book" class="primary-button" type="button">Mein Buch öffnen <span aria-hidden="true">↗</span></button>
-        <p class="open-hint"><span data-server-days>28</span> Servertage · <span data-month-count>28</span> Spielmonate<br><span data-report-count>31</span> Berichte. Ein Shinobi-Weg.</p>
+        <p class="open-hint"><span data-server-days>31</span> Servertage · <span data-month-count>31</span> Spielmonate<br><span data-report-count>33</span> Berichte. Ein Shinobi-Weg.</p>
         <div class="milestones" aria-label="Meine Rangaufstiege">
           <a href="#bericht-6"><small data-month-for="2026-10-28">Spielmonat 4</small><span>Bestätigter Genin</span><time datetime="2026-10-28">28.10.2026</time></a>
           <a href="#bericht-24"><small data-month-for="2026-11-14">Spielmonat 21</small><span>Konin <b aria-hidden="true">↗</b></span><time datetime="2026-11-14">14.11.2026</time></a>
@@ -61,17 +61,17 @@
     </section>
 
     <section id="open-spread" class="reading-view" aria-label="Aufgeschlagenes Konoha-Buch" hidden inert>
-      <div class="book-toolbar"><button id="close-book" class="quiet-button" type="button"><span aria-hidden="true">←</span> Buch schließen</button><span>SUPADA ITAMI <i> / </i> BAND I</span><div><button id="download" class="quiet-button" type="button" aria-label="Alle 31 Berichte als Text herunterladen">Text <span aria-hidden="true">↓</span></button><button id="print" class="quiet-button" type="button">Drucken / PDF</button></div></div>
-      <div class="mobile-book-tabs" role="group" aria-label="Buchansicht"><button id="mobile-contents" type="button" aria-pressed="false">Monate <span data-month-count>28</span></button><button id="mobile-reader" type="button" aria-pressed="true">Lesen <span aria-hidden="true">↗</span></button></div>
+      <div class="book-toolbar"><button id="close-book" class="quiet-button" type="button"><span aria-hidden="true">←</span> Buch schließen</button><span>SUPADA ITAMI <i> / </i> BAND I</span><div><button id="download" class="quiet-button" type="button" aria-label="Alle 33 Berichte als Text herunterladen">Text <span aria-hidden="true">↓</span></button><button id="print" class="quiet-button" type="button">Drucken / PDF</button></div></div>
+      <div class="mobile-book-tabs" role="group" aria-label="Buchansicht"><button id="mobile-contents" type="button" aria-pressed="false">Monate <span data-month-count>31</span></button><button id="mobile-reader" type="button" aria-pressed="true">Lesen <span aria-hidden="true">↗</span></button></div>
       <div class="paper-book">
         <aside id="contents-page" class="contents-page" aria-labelledby="contents-title" tabindex="-1">
           <div class="page-label"><span>DAS ARCHIV</span><svg class="leaf" aria-hidden="true"><use href="assets/konoha-emblem.svg#leaf"/></svg></div>
           <h2 id="contents-title">Spielmonate<span>.</span></h2>
           <div class="contents-search"><label><span class="sr-only">Monate und Berichte durchsuchen</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg><input type="search" id="chapter-search" placeholder="Monat oder Bericht suchen" autocomplete="off"></label><label><span class="sr-only">Nach Thema filtern</span><select id="chapter-category"><option value="Alle">Alle Themen</option><option>Training</option><option>Mission</option><option>Information</option><option>Prüfung</option><option>Rangaufstieg</option></select></label></div>
           <button id="show-profile" class="profile-link" type="button"><span>Über Supada Itami</span><span aria-hidden="true">↗</span></button>
-          <ol id="chapter-list" class="chapter-list" aria-label="28 Spielmonate"></ol>
+          <ol id="chapter-list" class="chapter-list" aria-label="31 Spielmonate"></ol>
           <div id="empty-state" class="empty-state" hidden><p>Kein passender Spielmonat gefunden.</p><button id="reset-search" type="button">Alle Spielmonate anzeigen</button></div>
-          <p id="result-count" class="contents-footer" role="status" aria-live="polite">28 Spielmonate · 31 Berichte</p>
+          <p id="result-count" class="contents-footer" role="status" aria-live="polite">31 Spielmonate · 33 Berichte</p>
         </aside>
         <section id="reader-page" class="reader-page" aria-labelledby="reader-title" tabindex="-1">
           <div class="page-label reader-running-head"><span id="running-chapter">DIE PERSON HINTER DEN BERICHTEN</span><span id="running-date">2026</span></div>

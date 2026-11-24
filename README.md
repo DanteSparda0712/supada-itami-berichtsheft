@@ -1,6 +1,6 @@
 # Supada Itami · Das Konoha-Buch
 
-Persönliche Naruto-Rollenspiel-Chronik mit 31 Berichten, gegliedert nach Spielmonaten. Statische Website auf GitHub Pages, ohne Build.
+Persönliche Naruto-Rollenspiel-Chronik mit 33 Berichten, gegliedert nach Spielmonaten. Statische Website auf GitHub Pages, ohne Build.
 
 ## Zeitrechnung
 
@@ -8,7 +8,7 @@ Persönliche Naruto-Rollenspiel-Chronik mit 31 Berichten, gegliedert nach Spielm
 
 Die ersten beiden früheren Datierungsvorschläge wurden auf den ersten Servertag gelegt. Die bisherigen 24 Berichtstexte, Titel und IDs bleiben erhalten. Mehrere Berichte vom selben realen Datum stehen zusammen in einem Spielmonat. Monate ohne Bericht werden als solche angezeigt; es werden keine Tätigkeiten ergänzt. Die Spielzeit ist die seit dem Beitritt vergangene Zeit, keine Angabe zum Alter des Charakters.
 
-Die Monatszählung wächst beim Laden mit dem realen Datum in Europe/Berlin weiter. Der aktuelle Dokumentationsstand am 21.11.2026 entspricht Servertag 28 und Spielmonat 28. Ein früher eingestelltes Geräte-Datum lässt den belegten Stand nicht zurückfallen.
+Die Monatszählung wächst beim Laden mit dem realen Datum in Europe/Berlin weiter. Der aktuelle Dokumentationsstand am 24.11.2026 entspricht Servertag 31 und Spielmonat 31. Ein früher eingestelltes Geräte-Datum lässt den belegten Stand nicht zurückfallen.
 
 | Rangaufstieg | Reales Datum | Spielmonat |
 | --- | --- | --- |
@@ -20,6 +20,10 @@ Die Monatszählung wächst beim Laden mit dem realen Datum in Europe/Berlin weit
 
 Die Berichte 25 bis 31 ergänzen die Spielmonate 22 bis 28. Für den 15. bis 19.11. stehen allgemeine, bearbeitbare Entwürfe zu Training und Vorbereitung im Personenschutz. Die beiden letzten Einträge beruhen auf den Angaben des Nutzers: Am **20.11.2026** wurde bei einer Mission die Diplomatenführung geschützt; am **21.11.2026** wurde der Kampftest für die Personenschutz-Untereinheit der Diplomatie-Division gemeinsam mit dem Bruder **Hogiki** bestanden. Eine formelle Aufnahme in die Untereinheit wird damit nicht behauptet.
 
+## Missionsberichte vom 22. und 23.11.2026
+
+Bericht 32 dokumentiert den Schutz von Konohas Mauern am **22.11.2026**, dem vom Nutzer genannten Tag des ersten großen Krieges (Spielmonat 29). Bericht 33 beschreibt die Teilnahme an der Mission gegen Banditen im **Reisdorf am 23.11.2026** (Spielmonat 30). Die bisherigen 31 Berichte bleiben unverändert. Für den aktuellen Spielmonat 31 wurde keine weitere Tätigkeit ergänzt.
+
 ## Bedienung
 
 - Den Einband oder „Mein Buch öffnen“ anklicken. Die flüssige Überblendung respektiert reduzierte Bewegung.
@@ -28,7 +32,7 @@ Die Berichte 25 bis 31 ergänzen die Spielmonate 22 bis 28. Für den 15. bis 19.
 - Auf dem Handy zwischen „Monate“ und „Lesen“ wechseln.
 - „Bearbeiten“ ändert einzelne Berichte. Das reale Datum bestimmt ihren Spielmonat. Rangtitel und Rangdaten bleiben fest.
 - Vorhandene Änderungen bleiben unter `supada-itami-reports-v1` erhalten. Frühere Datierungsvorschläge außerhalb der Serverzeit werden für die Zuordnung auf deren Grenzen begrenzt; gespeicherte Texte werden nicht überschrieben.
-- „Text“ und „Drucken / PDF“ exportieren alle Spielmonate und alle 31 Berichte mit der Zeitregel und den realen Daten.
+- „Text“ und „Drucken / PDF“ exportieren alle Spielmonate und alle 33 Berichte mit der Zeitregel und den realen Daten.
 
 Berichte sind fiktive, bearbeitbare Textvorschläge für das Rollenspiel. Charakterbild, Daiton, Konin-Rang und Nindō „Der Tod ist keine Schande.“ bleiben erhalten.
 

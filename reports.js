@@ -1,8 +1,8 @@
 'use strict';
 const serverTimeline = Object.freeze({
   "startDate": "2026-10-25",
-  "asOfDate": "2026-11-21",
-  "serverDaysAsOf": 28
+  "asOfDate": "2026-11-24",
+  "serverDaysAsOf": 31
 });
 const reports = [
   {
@@ -274,5 +274,23 @@ const reports = [
     "excerpt": "21.11.2026: Gemeinsam mit meinem Bruder Hogiki den Kampftest für den Personenschutz bestanden.",
     "topic": "Personenschutz / Kampftest",
     "body": "Am 21.11.2026 habe ich gemeinsam mit meinem Bruder Hogiki den Kampftest für die Personenschutz-Untereinheit der Diplomatie-Division bestanden. Nach der Schutzmission für die Diplomatenführung vom Vortag ist dies ein weiterer wichtiger Schritt in meinen Tests für diesen Bereich.\n\nIm Kampftest war mir wichtig, konzentriert zu bleiben und meine Grundlagen kontrolliert einzusetzen. Bei der Zusammenarbeit mit Hogiki habe ich besonders auf klare Absprachen und gegenseitige Aufmerksamkeit geachtet. Ich wollte meine bisherigen Erfahrungen sinnvoll einbringen und auch bei Anspannung ruhig an die Aufgabe herangehen.\n\nDass ich den Kampftest zusammen mit meinem Bruder bestanden habe, bedeutet mir viel. Ich nehme daraus Motivation mit, weiter an meinen Fähigkeiten zu arbeiten und Verantwortung bewusst zu übernehmen.\n\nErgebnis: Kampftest gemeinsam mit meinem Bruder Hogiki bestanden."
+  },
+  {
+    "id": 32,
+    "date": "2026-11-22",
+    "category": "Mission",
+    "title": "Konohas Mauern im ersten großen Krieg schützen",
+    "excerpt": "22.11.2026: Am Tag des ersten großen Krieges die Mauern Konohas beschützen.",
+    "topic": "Erster großer Krieg / Verteidigung Konohas",
+    "body": "Am 22.11.2026 habe ich, Supada Itami, die Mauern Konohas beschützt. An diesem Tag fand der erste große Krieg statt. In dieser angespannten Lage stand für mich der Schutz unseres Dorfes im Mittelpunkt.\n\nWährend meines Einsatzes an den Mauern habe ich darauf geachtet, aufmerksam zu bleiben und die gemeinsame Aufgabe ernst zu nehmen. Mir war wichtig, ruhig zu handeln, Absprachen zu beachten und mich auf meine Verantwortung zu konzentrieren.\n\nDieser Einsatz hat mir verdeutlicht, wie viel der Zusammenhalt innerhalb Konohas bedeutet. In einer solchen Situation zählt für mich, verlässlich an meiner Aufgabe festzuhalten und andere im Blick zu behalten. Den Schutz der Mauern am Tag des ersten großen Krieges halte ich als wichtigen Abschnitt meines Weges fest."
+  },
+  {
+    "id": 33,
+    "date": "2026-11-23",
+    "category": "Mission",
+    "title": "Mission gegen Banditen im Reisdorf",
+    "excerpt": "23.11.2026: An einer Mission im Reisdorf teilnehmen und gemeinsam gegen Banditen kämpfen.",
+    "topic": "Reisdorf / Einsatz gegen Banditen",
+    "body": "Am 23.11.2026 habe ich an einer Mission im Reisdorf teilgenommen. Im Verlauf dieses Einsatzes haben wir gemeinsam gegen Banditen gekämpft. Für mich war wichtig, aufmerksam mit der Gruppe zusammenzuarbeiten und mich auf die gemeinsame Aufgabe zu konzentrieren.\n\nWährend der Auseinandersetzung habe ich darauf geachtet, ruhig zu bleiben und meine Grundlagen kontrolliert einzusetzen. Die Erfahrungen aus meinen bisherigen Übungen und Einsätzen haben mich daran erinnert, auch unter Anspannung auf meine Haltung und die Absprachen mit den anderen zu achten.\n\nAus der Mission nehme ich weitere Erfahrungen für meinen Weg als Shinobi mit. Besonders die Zusammenarbeit und ein bewusster Umgang mit der eigenen Konzentration bleiben für mich wichtige Punkte. Ich möchte meine Eindrücke aus dem Einsatz im Reisdorf im nächsten Training aufgreifen und weiter an meinen Grundlagen arbeiten."
   }
 ];
